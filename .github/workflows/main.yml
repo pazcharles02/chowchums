@@ -1,0 +1,29 @@
+name: App Dev Build
+on:
+  push:
+    branches: [ master, dev ]
+  pull_request: 
+    branches: [ master, dev ]
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "21"
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2.12.0
+        with:
+          flutter-version: "3.0.0"
+          channel: "stable"
+      - name: Get dependencies
+        run: flutter pub get
+        
+      - name: Start release build
+        run: flutter build appbundle
