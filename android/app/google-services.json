@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "997914887948",
+    "project_id": "chowchums-2c5b3",
+    "storage_bucket": "chowchums-2c5b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997914887948:android:75382a9ea5ab13f0952b29",
+        "android_client_info": {
+          "package_name": "com.example.chowchums"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTNvpjWSzuxz4e-k5mEs262-tQn6sw1Ac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
