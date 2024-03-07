@@ -2,9 +2,15 @@
 
 import 'package:flutter/material.dart';
 import './screens/login_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+
+void main() async {
+  await Firebase.initializeApp();
   runApp(const MyApp());
+
+
+  
 }
 
 class MyApp extends StatelessWidget {
