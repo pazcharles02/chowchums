@@ -1,7 +1,7 @@
-// registration_page.dart
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import './home_page.dart';
 
 
 class RegistrationPage extends StatelessWidget {
@@ -17,7 +17,7 @@ class RegistrationPage extends StatelessWidget {
 
     Future<void> registerUser(BuildContext context) async {
     try {
-      String username = usernameController.text;
+      String email = usernameController.text;
       String password = passwordController.text;
       String confirmedPassword = confirmPasswordController.text;
 
@@ -25,11 +25,17 @@ class RegistrationPage extends StatelessWidget {
 
       if(password == confirmedPassword) {
         UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-          email: username,
+          email: email,
           password: password,
         );
 
       }
+
+       Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+
 
 
     } catch (err) {
@@ -54,7 +60,7 @@ class RegistrationPage extends StatelessWidget {
             TextField(
               controller: usernameController,
               decoration: InputDecoration(
-                labelText: 'Username',
+                labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
             ),

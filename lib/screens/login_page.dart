@@ -1,6 +1,3 @@
-// login_page.dart
-
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import './registration_page.dart';
