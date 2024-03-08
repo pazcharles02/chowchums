@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import './create_profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:chowchums/tcp_client/tcp_client.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final String userId;
-
   const HomePage({Key? key, required this.userId}) : super(key: key);
+
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +58,12 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                runApp(App());
+              },
+              child: Text('Chat Here!'),
             ),
           );
         }
