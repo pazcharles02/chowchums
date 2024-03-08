@@ -30,6 +30,8 @@ class TcpBloc extends Bloc<TcpEvent, TcpState> {
       yield state.copyWithNewMessage(message: event.message);
     } else if (event is SendMessage) {
       yield* _mapSendMessageToState(event);
+    } else if (event is ConnectHost) {
+      yield* _ConnectHost(event);
     }
   }
 
@@ -81,10 +83,16 @@ class TcpBloc extends Bloc<TcpEvent, TcpState> {
   Stream<TcpState> _mapSendMessageToState(SendMessage event) async* {
     if (_socket != null) {
       yield state.copyWithNewMessage(message: Message(
-        message: event.message,
+        message: event.message.substring(5 + event.nickLength),
         timestamp: DateTime.now(),
         sender: Sender.Client,
       ));
+      _socket!.writeln(event.message);
+    }
+  }
+
+  Stream<TcpState> _ConnectHost(ConnectHost event) async* {
+    if (_socket != null) {
       _socket!.writeln(event.message);
     }
   }

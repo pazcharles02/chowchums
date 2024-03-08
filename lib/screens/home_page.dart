@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:chowchums/tcp_client/tcp_client.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +27,9 @@ class HomePage extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Add your button logic here
+                runApp(App());
               },
-              child: Text('Button'),
+              child: Text('Chat Here!'),
             ),
           ],
         ),

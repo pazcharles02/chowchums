@@ -12,7 +12,7 @@ class Connect extends TcpEvent {
   final int port;
 
   Connect({required this.host, required this.port})
-      : assert(host != null), assert(port != null);
+      : assert(host != null);
 
   @override
   String toString() => '''Connect {
@@ -20,6 +20,18 @@ class Connect extends TcpEvent {
     port: $port
   }''';
 }
+//
+// class AddName extends TcpEvent {
+//   final dynamic name;
+//
+//   AddName({required this.name})
+//     : assert(name != null);
+//
+//   @override
+//   String toString() => '''AddName {
+//     name: $name
+//   }''';
+// }
 
 /// Represents a request to disconnect from the server or abort the current connection request.
 class Disconnect extends TcpEvent {
@@ -49,9 +61,20 @@ class MessageReceived extends TcpEvent {
 class SendMessage extends TcpEvent {
   /// The message to be sent to the TCP server.
   final String message;
+  final int nickLength;
 
-  SendMessage({required this.message});
+  SendMessage({required this.message, required this.nickLength});
 
   @override
   String toString() => 'SendMessage { }';
+}
+
+class ConnectHost extends TcpEvent {
+  /// The message to be sent to the TCP server.
+  final String message;
+
+  ConnectHost({required this.message});
+
+  @override
+  String toString() => 'ConnectHost { }';
 }
