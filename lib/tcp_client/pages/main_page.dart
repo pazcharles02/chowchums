@@ -127,7 +127,7 @@ class _MainPageState extends State<MainPage> {
                           Connect(
                             host: Constants.chatServerAddress,
                             // port: int.parse(_portEditingController!.text)
-                            port: 6666
+                            port: 8212
                           )
                         );
                         // _tcpBloc!.add(
@@ -135,6 +135,7 @@ class _MainPageState extends State<MainPage> {
                         //     name: _nameChattingController!.text
                         //   )
                         // );
+                        print("Connecting to: ${Constants.chatServerAddress}");
                         print("sending nickname to server");
                         _tcpBloc!.add(
                             ConnectHost(
