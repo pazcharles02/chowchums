@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import './home_page.dart';
 
 class CreateProfilePage extends StatelessWidget {
@@ -16,17 +17,28 @@ class CreateProfilePage extends StatelessWidget {
       String displayName = displayNameController.text;
       // You can use the selectedFood variable here for the user's choice
 
-      // Here, you can save the profile details to a database or perform any necessary actions
-      print('Saving profile for user ID: $userId');
-      print('Display Name: $displayName');
-      print('Favorite Food: $selectedFood');
+      // Access the Firestore instance
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-      // You can navigate to another page after saving the profile
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
+      // Create a reference to the users collection
+      CollectionReference users = firestore.collection('users');
+
+      // Create a new document with a unique ID
+      users.doc(userId).set({
+        'displayName': displayName,
+        'favoriteFood': selectedFood,
+      })
+          .then((value) {
+        print("Profile Added");
+        // Navigate to another page after saving the profile
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage(userId: userId)),
+        );
+      })
+          .catchError((error) => print("Failed to add profile: $error"));
     }
+
 
     return Scaffold(
       appBar: AppBar(
@@ -71,6 +83,10 @@ class CreateProfilePage extends StatelessWidget {
               onPressed: () {
                 saveProfile();
               },
+              style: ElevatedButton.styleFrom(
+                primary: Theme.of(context).colorScheme.primary,
+                onPrimary: Colors.black,
+              ),
               child: Text('Save Profile'),
             ),
           ],
