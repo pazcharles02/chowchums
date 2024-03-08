@@ -3,22 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import './home_page.dart';
 
 
-final ThemeData myTheme = ThemeData(
-  colorScheme: ColorScheme(
-    primary: Color(0xFFF9DE34),
-    secondary: Color(0xFFF9DE34),
-    surface: Color(0xFFFFFFFF),
-    background: Color(0xFFD94432),
-    error: Colors.red,
-    onPrimary: Color(0xFFF9DE34),
-    onSecondary: Color(0xFF000000),
-    onSurface: Color(0xFF000000),
-    onBackground: Color(0xFFF9DE34),
-    onError: Colors.white,
-    brightness: Brightness.dark,
-  ),
-  fontFamily: 'Roboto',
-);
 
 class CreateProfilePage extends StatelessWidget {
 
@@ -103,6 +87,10 @@ class CreateProfilePage extends StatelessWidget {
               onPressed: () {
                 saveProfile();
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Colors.black,
+              ),
               child: Text('Save Profile'),
             ),
           ],
