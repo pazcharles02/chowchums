@@ -54,10 +54,15 @@ class LoginPage extends StatelessWidget {
                     String password = passwordController.text;
                     UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: username, password: password);
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                    );
+                    if (userCredential.user != null) {
+                      String userId = userCredential.user!.uid; // Get the UID of the logged-in user
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage(userId: userId)),
+                      );
+                    } else {
+                      print('User is null');
+                    }
 
                   } catch(error) {
                     print('login failed');
