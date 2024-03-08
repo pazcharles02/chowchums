@@ -62,56 +62,65 @@ class RegistrationPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Registration'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Registration Page',
-              style: TextStyle(fontSize: 24),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: usernameController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              // Image widget here
+              Image.asset(
+                'assets/images/chowchums_white_logo.png',
+                height: 150,
+                width: 150,
+                fit: BoxFit.contain,
               ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              obscureText: true,
-              controller: passwordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
+              SizedBox(height: 20),
+              TextField(
+                controller: usernameController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              obscureText: true,
-              controller: confirmPasswordController,
-              decoration: InputDecoration(
-                labelText: 'Confirm Password',
-                border: OutlineInputBorder(),
+              SizedBox(height: 10),
+              TextField(
+                obscureText: true,
+                controller: passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                registerUser(context);
-              },
-              child: Text('Register'),
-            ),
-            SizedBox(height: 10),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Go back to Login'),
-            ),
-          ],
+              SizedBox(height: 10), // Adjusted height
+              TextField(
+                obscureText: true,
+                controller: confirmPasswordController,
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  registerUser(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).colorScheme.primary,
+                  onPrimary: Colors.black,
+                ),
+                child: Text('Register'),
+              ),
+              SizedBox(height: 10),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Go back to Login'),
+              ),
+            ],
+          ),
         ),
       ),
     );
