@@ -107,8 +107,6 @@ class RegistrationPage extends StatelessWidget {
                   registerUser(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).colorScheme.primary,
-                  onPrimary: Colors.black,
                 ),
                 child: Text('Register'),
               ),

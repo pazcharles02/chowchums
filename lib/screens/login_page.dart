@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import './registration_page.dart';
 import './home_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -19,12 +19,12 @@ class LoginPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(16.0, 64.0, 16.0, 16.0), // Adjust top padding
+          padding: EdgeInsets.fromLTRB(16.0, 64.0, 16.0, 16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                'assets/images/chowchums_white_logo.png', // Replace with your image asset path
+                'assets/images/chowchums_white_logo.png',
                 height: 150,
                 width: 150,
                 fit: BoxFit.contain,
@@ -55,23 +55,19 @@ class LoginPage extends StatelessWidget {
                     UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: username, password: password);
 
                     if (userCredential.user != null) {
-                      String userId = userCredential.user!.uid; // Get the UID of the logged-in user
+                      String userId = userCredential.user!.uid;
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => HomePage(userId: userId)),
                       );
                     } else {
-                      print('User is null');
+                      // Handle case when user is null
                     }
-
                   } catch(error) {
-                    print('login failed');
+                    // Handle login failure
+                    print('Login failed: $error');
                   }
                 },
-                style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).colorScheme.primary,
-                  onPrimary: Colors.black,
-                ),
                 child: Text('Login'),
               ),
               SizedBox(height: 10),

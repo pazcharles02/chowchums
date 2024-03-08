@@ -49,10 +49,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     },
-                    style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).colorScheme.primary,
-                      onPrimary: Colors.black,
-                    ),
                     child: Text('Edit profile'),
                   ),
                   SizedBox(height: 20),
@@ -61,8 +57,6 @@ class _HomePageState extends State<HomePage> {
                       runApp(App());
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).colorScheme.primary,
-                      onPrimary: Colors.black,
                     ),
                     child: Text('Chat Here!'),
                   ),
