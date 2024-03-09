@@ -48,6 +48,7 @@ class LoginPage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               ElevatedButton(
+                key: Key('login_button'), 
                 onPressed: () async {
                   try {
                     String username = usernameController.text;
@@ -79,7 +80,7 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RegistrationPage()),
+                    MaterialPageRoute(builder: (context) => RegistrationPage(auth: _auth)),
                   );
                 },
                 child: Text('Create an Account'),

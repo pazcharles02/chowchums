@@ -35,6 +35,11 @@ void main() {
 
   // Verify that the text field contains the entered text
   expect(find.text('password'), findsOneWidget);
+
+  await tester.tap(find.byKey(Key('login_button')));
+
+  await tester.pumpAndSettle();
+
 });
   
 }

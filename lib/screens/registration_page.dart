@@ -4,14 +4,19 @@ import './home_page.dart';
 import './create_profile_page.dart';
 
 class RegistrationPage extends StatelessWidget {
-  const RegistrationPage({Key? key}) : super(key: key);
+  final FirebaseAuth auth;
+  
+  const RegistrationPage({Key? key, required this.auth}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
+    
+    
     TextEditingController usernameController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     TextEditingController confirmPasswordController = TextEditingController();
-    final FirebaseAuth _auth = FirebaseAuth.instance;
 
     Future<void> registerUser(BuildContext context) async {
       try {
@@ -20,7 +25,7 @@ class RegistrationPage extends StatelessWidget {
         String confirmedPassword = confirmPasswordController.text;
 
         if (password == confirmedPassword) {
-          UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+          UserCredential userCredential = await auth.createUserWithEmailAndPassword(
             email: email,
             password: password,
           );
