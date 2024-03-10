@@ -1,3 +1,11 @@
+/*
+User Story #3
+As a user, I expect my personal information to be securely stored and transmitted, using encryption methods to protect against unauthorized access along with a secure login.
+
+*Acceptance Criteria: Functional authorization services for login like use of SSO services like Google or Facebook
+ */
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:firebase_auth/firebase_auth.dart';

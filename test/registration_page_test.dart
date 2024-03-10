@@ -1,3 +1,12 @@
+/*
+User Story #2
+
+As a user, I want to be able to quickly register and create my profile and begin looking for new friends quicker.
+
+*Acceptance Criteria: users are able to create their profile in less  than 1 minute.
+
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -46,7 +46,7 @@ class CreateProfilePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Profile'),
+
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

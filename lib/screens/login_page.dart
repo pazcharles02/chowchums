@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+
       ),
       body: SingleChildScrollView(
         child: Padding(

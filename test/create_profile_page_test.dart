@@ -1,3 +1,10 @@
+/*
+User Story #1
+As a new user, I want to easily create a profile by providing basic information so that I can start connecting with potential new friends .
+
+*Acceptance Criteria: User can give their name and favourite foods.
+
+*/
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
