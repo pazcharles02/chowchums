@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+
+List<Container> cards = [
+    Container(
+      alignment: Alignment.center,
+      child: const Text('1'),
+      color: Colors.blue,
+    ),
+    Container(
+      alignment: Alignment.center,
+      child: const Text('2'),
+      color: Colors.red,
+    ),
+    Container(
+      alignment: Alignment.center,
+      child: const Text('3'),
+      color: Colors.purple,
+    )
+  ];
 
 class MatchPage extends StatefulWidget {
   final String userId;
   const MatchPage({Key? key, required this.userId}) : super(key: key);
+  
 
   @override
   _MatchPageState createState() => _MatchPageState();
@@ -26,14 +46,12 @@ class _MatchPageState extends State<MatchPage> {
           //just to check if user is logged in take out later
           final displayName = snapshot.data!.get('displayName');
           return Scaffold(
-            body: Swiper(
-              itemBuilder: (BuildContext context,int index){
-                return Image.network("https://via.placeholder.com/350x150",fit: BoxFit.fill,);
-              },
-              itemCount: 10,
-              control: SwiperControl(),
-                    
-            ),
+            body: Flexible(
+              child: CardSwiper(
+                cardsCount: 3,
+                cardBuilder: (context, index, percentThresholdX, percentThresholdY) => cards[index],
+              )
+            )
           );
         }
       },
