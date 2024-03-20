@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:card_swiper/card_swiper.dart';
 
 class MatchPage extends StatefulWidget {
   final String userId;
@@ -25,14 +26,13 @@ class _MatchPageState extends State<MatchPage> {
           //just to check if user is logged in take out later
           final displayName = snapshot.data!.get('displayName');
           return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-
-                  // Add your Match Page shit here
-                ],
-              ),
+            body: Swiper(
+              itemBuilder: (BuildContext context,int index){
+                return Image.network("https://via.placeholder.com/350x150",fit: BoxFit.fill,);
+              },
+              itemCount: 10,
+              control: SwiperControl(),
+                    
             ),
           );
         }
