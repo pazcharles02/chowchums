@@ -64,9 +64,6 @@ class RegistrationPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),

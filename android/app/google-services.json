@@ -12,7 +12,20 @@
           "package_name": "com.example.chowchums"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "997914887948-b7f4uf4672qb8fkidn6sbubn3754m0ao.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chowchums",
+            "certificate_hash": "64a83c20add06c92c29926e3a4d04d477d6e039a"
+          }
+        },
+        {
+          "client_id": "997914887948-krsi2o0466j2pef3h0su28s38ostbdcu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDTNvpjWSzuxz4e-k5mEs262-tQn6sw1Ac"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997914887948-krsi2o0466j2pef3h0su28s38ostbdcu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "997914887948-pqfeajaqb68c7idl7ogm2onp8iujddcf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chowchums"
+              }
+            }
+          ]
         }
       }
     }

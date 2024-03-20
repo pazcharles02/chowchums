@@ -14,9 +14,6 @@ class LoginPage extends StatelessWidget {
     TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(
-
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.fromLTRB(16.0, 64.0, 16.0, 16.0), // Adjust top padding
@@ -24,7 +21,7 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                'assets/images/chowchums_white_logo.png', // Replace with your image asset path
+                'assets/images/chowchums_white_logo.png',
                 height: 150,
                 width: 150,
                 fit: BoxFit.contain,
@@ -56,7 +53,7 @@ class LoginPage extends StatelessWidget {
                     UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: username, password: password);
 
                     if (userCredential.user != null) {
-                      String userId = userCredential.user!.uid; // Get the UID of the logged-in user
+                      String userId = userCredential.user!.uid;
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => HomePage(userId: userId)),

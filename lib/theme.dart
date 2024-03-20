@@ -14,6 +14,5 @@ final ThemeData myTheme = ThemeData(
     onError: Colors.white, // Text color on error
     brightness: Brightness.dark, // Theme brightness (light or dark)
   ),
-  fontFamily: 'Roboto', // Optional: Change this to your desired font
-  // Add more properties as needed
+  fontFamily: 'Roboto',
 );

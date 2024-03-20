@@ -19,9 +19,7 @@ class CreateProfilePage extends StatelessWidget {
 
     void saveProfile() {
       String displayName = displayNameController.text;
-      // You can use the selectedFood variable here for the user's choice
 
-      // Access the Firestore instance
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
       // Create a reference to the users collection
@@ -34,7 +32,7 @@ class CreateProfilePage extends StatelessWidget {
       })
           .then((value) {
         print("Profile Added");
-        // Navigate to another page after saving the profile
+        // Navigate to profile
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage(userId: userId)),
@@ -45,9 +43,6 @@ class CreateProfilePage extends StatelessWidget {
 
 
     return Scaffold(
-      appBar: AppBar(
-
-      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(

@@ -46,7 +46,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ChowChums Chat'),
+        title: Text('Chat'),
         actions: [
           IconButton(
             icon: Icon(Icons.info_outline),
