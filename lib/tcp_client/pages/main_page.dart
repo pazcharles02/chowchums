@@ -201,7 +201,7 @@ class _MainPageState extends State<MainPage> {
                         onPressed: _chatTextEditingController!.text.isEmpty
                           ? null
                           : () {
-                            _tcpBloc!.add(SendMessage(message: "/msg ${_nameChattingController!.text} ${_chatTextEditingController!.text}", nickLength: _nickEditingController!.text.length));
+                            _tcpBloc!.add(SendMessage(message: "/msg ${_nameChattingController!.text} ${_chatTextEditingController!.text}", nickLength: _nameChattingController!.text.length));
                             _chatTextEditingController!.text = '';
                           },
                       )
