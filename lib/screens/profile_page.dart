@@ -59,21 +59,14 @@ class _ProfilePageState extends State<ProfilePage> {
         } else {
           final displayName = snapshot.data!.get('displayName');
           _profileImageUrl = snapshot.data!.get('profileImageUrl');
-          print("AAAAAAAAAAAAAAAAAAAAAAAAA" + _profileImageUrl);
+          // final bio = snapshot.data!.get('biography');
+          // print("AAAAAAAAAAAAAAAAAAAAAAAAA" + _profileImageUrl + "AAAAAA" + bio);
           return Scaffold(
             body: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Center(
-                      child: Text(
-                        '$displayName!',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 50), // Added space above profile picture
                   // Profile picture section
                   GestureDetector(
                     onTap: () async {
@@ -94,6 +87,22 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Center(
+                      child: Text(
+                        '$displayName',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(20.0),
+                  //   child: Text(
+                  //     '$bio',
+                  //     style: TextStyle(fontSize: 24),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
