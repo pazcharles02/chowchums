@@ -12,12 +12,25 @@ class MatchPage extends StatefulWidget {
 }
 
 class _MatchPageState extends State<MatchPage> {
+  final CardSwiperController controller = CardSwiperController();
   late Future<QuerySnapshot<Map<String, dynamic>>> _userFuture;
 
   @override
   void initState() {
     super.initState();
+    controller.dispose();
     _userFuture = FirebaseFirestore.instance.collection('users').get();
+  }
+
+  bool _onSwipe(
+    int previousIndex,
+    int? currentIndex,
+    CardSwiperDirection direction,
+  ) {
+    debugPrint(
+      'The card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
+    );
+    return true;
   }
 
   @override
@@ -42,6 +55,7 @@ class _MatchPageState extends State<MatchPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('User Display Name: $name'),
+                  Text('favorite Foods: $favoriteFood'),
                 ],
               ),
               color: Colors.blue,
@@ -49,10 +63,13 @@ class _MatchPageState extends State<MatchPage> {
           }).toList();
           return Scaffold(
             body: CardSwiper(
+              controller: controller,
               cardsCount: fetchedData.length,
+              onSwipe: _onSwipe,
               cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>
                   fetchedData[index],
             ),
+            
           );
         }
       },
