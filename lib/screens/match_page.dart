@@ -39,7 +39,6 @@ class _MatchPageState extends State<MatchPage> {
       SnackBar(
         content: Text('No more users to match'),
         behavior: SnackBarBehavior.fixed,
-        duration: Duration(days: 1),
       ),
     );
     
