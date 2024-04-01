@@ -14,13 +14,16 @@ class MatchPage extends StatefulWidget {
 class _MatchPageState extends State<MatchPage> {
   final CardSwiperController controller = CardSwiperController();
   late Future<QuerySnapshot<Map<String, dynamic>>> _userFuture;
+  List<DocumentSnapshot>? _userData;
 
-  @override
+ 
+    @override
   void initState() {
     super.initState();
     controller.dispose();
     _userFuture = FirebaseFirestore.instance.collection('users').get();
   }
+
 
   bool _onSwipe(
     int previousIndex,
@@ -30,6 +33,20 @@ class _MatchPageState extends State<MatchPage> {
     debugPrint(
       'The card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
     );
+
+    if(currentIndex == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('No more users to match'),
+        behavior: SnackBarBehavior.fixed,
+        duration: Duration(days: 1),
+      ),
+    );
+    
+
+    }
+
+  
     return true;
   }
 
@@ -66,6 +83,7 @@ class _MatchPageState extends State<MatchPage> {
               controller: controller,
               cardsCount: fetchedData.length,
               onSwipe: _onSwipe,
+              isLoop: false,
               cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>
                   fetchedData[index],
             ),
