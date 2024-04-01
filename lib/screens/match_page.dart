@@ -26,28 +26,48 @@ class _MatchPageState extends State<MatchPage> {
 
 
   bool _onSwipe(
-    int previousIndex,
-    int? currentIndex,
-    CardSwiperDirection direction,
-  ) {
-    debugPrint(
-      'The card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
-    );
+  int previousIndex,
+  int? currentIndex,
+  CardSwiperDirection direction,
+  List<DocumentSnapshot>? userData,
+  String userID,
+) {
+  if (userData == null || previousIndex < 0 || previousIndex >= userData.length) {
+    debugPrint('Invalid userData or out of bounds index');
+    return false;
+  }
 
-    if(currentIndex == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
+  debugPrint(
+    'The card $previousIndex was swiped to the ${direction.name}. Now the card ${currentIndex ?? 'null'} is on top',
+  );
+
+debugPrint('Current User ID: ${userData[previousIndex].id}');
+
+  if (currentIndex == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('No more users to match'),
         behavior: SnackBarBehavior.fixed,
       ),
-    );
-    
+    ); 
+  }
 
-    }
+  if (direction == CardSwiperDirection.left) {
+    // Add the user ID to the 'notMatched' field in Firestore
+    FirebaseFirestore.instance.collection('users').doc(userID).update({
+      'notMatched': FieldValue.arrayUnion([userData[previousIndex].id]),
+    }).then((_) {
+      debugPrint('User ID added to notMatched field');
+    }).catchError((error) {
+      debugPrint('Error adding user ID to notMatched field: $error');
+    });
+  }
+
+  return true;
+}
+
 
   
-    return true;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,11 +85,13 @@ class _MatchPageState extends State<MatchPage> {
           List<Widget> fetchedData = userData.map((doc) {
             final name = doc['displayName'];
             final favoriteFood = doc['favoriteFood'];
+            final usersID = doc.id;
             return Container(
               alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text('User ID: $usersID'),
                   Text('User Display Name: $name'),
                   Text('favorite Foods: $favoriteFood'),
                 ],
@@ -81,7 +103,8 @@ class _MatchPageState extends State<MatchPage> {
             body: CardSwiper(
               controller: controller,
               cardsCount: fetchedData.length,
-              onSwipe: _onSwipe,
+              onSwipe: (previousIndex, currentIndex, direction) =>
+                _onSwipe(previousIndex, currentIndex, direction, userData, widget.userId),
               isLoop: false,
               cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>
                   fetchedData[index],
