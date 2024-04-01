@@ -63,6 +63,17 @@ debugPrint('Current User ID: ${userData[previousIndex].id}');
     });
   }
 
+  if (direction == CardSwiperDirection.right) {
+    // Add the user ID to the 'notMatched' field in Firestore
+    FirebaseFirestore.instance.collection('users').doc(userID).update({
+      'Matched': FieldValue.arrayUnion([userData[previousIndex].id]),
+    }).then((_) {
+      debugPrint('User ID added to Matched field');
+    }).catchError((error) {
+      debugPrint('Error adding user ID to notMatched field: $error');
+    });
+  }
+
   return true;
 }
 
