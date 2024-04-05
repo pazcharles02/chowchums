@@ -29,6 +29,7 @@ class CreateProfilePage extends StatelessWidget {
       users.doc(userId).set({
         'displayName': displayName,
         'favoriteFood': selectedFood,
+        'profileImageUrl':null
       })
           .then((value) {
         print("Profile Added");

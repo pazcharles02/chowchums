@@ -15,7 +15,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String _profileImageUrl = ""; // Store profile image URL chowchums-2c5b3.appspot.com
+  String _profileImageUrl = ""; // Store profile image URL
 
   void _signOut() async {
     try {
@@ -40,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
           .update({'profileImageUrl': url});
       setState(() {
         _profileImageUrl = url;
-        print("SSSSSSSSSSSSSSSSSSSSS" + _profileImageUrl);
+        print("Profile Image URL: $_profileImageUrl");
       });
     } catch (e) {
       print("Error uploading profile picture: $e");
@@ -58,31 +58,28 @@ class _ProfilePageState extends State<ProfilePage> {
           return Text('Error fetching data');
         } else {
           final displayName = snapshot.data!.get('displayName');
-          _profileImageUrl = snapshot.data!.get('profileImageUrl');
-          // final bio = snapshot.data!.get('biography');
-          // print("AAAAAAAAAAAAAAAAAAAAAAAAA" + _profileImageUrl + "AAAAAA" + bio);
+          _profileImageUrl = snapshot.data!.get('profileImageUrl') ?? ""; //null checker
+
           return Scaffold(
             body: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: 50), // Added space above profile picture
-                  // Profile picture section
+                  SizedBox(height: 50),
                   GestureDetector(
                     onTap: () async {
-                      // Handle image selection (use a library like image_picker)
                       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
                       if (image != null) {
                         await _uploadProfilePicture(image.path);
                       }
                     },
                     child: Container(
-                      width: 100, // Fixed width
-                      height: 100, // Fixed height
+                      width: 100,
+                      height: 100,
                       child: CircleAvatar(
                         radius: 50,
                         backgroundImage: _profileImageUrl.isEmpty
-                            ? AssetImage('assets/images/default_picture.png') // Use AssetImage for local image
+                            ? AssetImage('assets/images/default_picture.png')
                             : NetworkImage(_profileImageUrl) as ImageProvider,
                       ),
                     ),
@@ -96,13 +93,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(20.0),
-                  //   child: Text(
-                  //     '$bio',
-                  //     style: TextStyle(fontSize: 24),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
