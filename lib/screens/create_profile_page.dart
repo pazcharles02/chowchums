@@ -232,7 +232,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
         .set({
       'displayName': displayName,
       'favoriteFood': selectedFood,
-      'bio': bio,
+      'biography': bio,
       'profileImageUrl': _profileImageUrl,
     })
         .then((value) {
