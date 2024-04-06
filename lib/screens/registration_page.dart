@@ -5,15 +5,11 @@ import './create_profile_page.dart';
 
 class RegistrationPage extends StatelessWidget {
   final FirebaseAuth auth;
-  
+
   const RegistrationPage({Key? key, required this.auth}) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {
-    
-    
     TextEditingController usernameController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     TextEditingController confirmPasswordController = TextEditingController();
@@ -24,13 +20,22 @@ class RegistrationPage extends StatelessWidget {
         String password = passwordController.text;
         String confirmedPassword = confirmPasswordController.text;
 
+        if (password.length < 6) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Password must be at least 6 characters long.'),
+              duration: Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+          return;
+        }
+
         if (password == confirmedPassword) {
           UserCredential userCredential = await auth.createUserWithEmailAndPassword(
             email: email,
             password: password,
           );
-
-          // If registration is successful, navigate to CreateProfilePage
           if (userCredential.user != null) {
             Navigator.push(
               context,
@@ -38,28 +43,23 @@ class RegistrationPage extends StatelessWidget {
             );
           }
         } else {
-          // Handle passwords not matching
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Passwords do not match'),
-                content: Text('Please make sure the passwords match.'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('OK'),
-                  ),
-                ],
-              );
-            },
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Passwords do not match. Please make sure the passwords match.'),
+              duration: Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+            ),
           );
         }
       } catch (err) {
         print('Failed to register user: $err');
-        // Handle other registration errors if needed
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to register user: $err'),
+            duration: Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
       }
     }
 
@@ -70,7 +70,6 @@ class RegistrationPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              // Image widget here
               Image.asset(
                 'assets/images/chowchums_white_logo.png',
                 height: 150,
