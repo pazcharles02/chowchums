@@ -15,12 +15,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String _profileImageUrl = ""; // Store profile image URL
+  String _profileImageUrl = "";
 
   void _signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      // Navigate to login page after log out
       Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
     } catch (e) {
       print("Error signing out: $e");
@@ -58,6 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
           return Text('Error fetching data');
         } else {
           final displayName = snapshot.data!.get('displayName');
+          final bio = snapshot.data!.get('biography');
           _profileImageUrl = snapshot.data!.get('profileImageUrl') ?? ""; //null checker
 
           return Scaffold(
@@ -89,6 +89,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Center(
                       child: Text(
                         '$displayName',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Center(
+                      child: Text(
+                        '$bio',
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
