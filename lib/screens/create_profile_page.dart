@@ -234,6 +234,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
       'favoriteFood': selectedFood,
       'biography': bio,
       'profileImageUrl': _profileImageUrl,
+      'notMatched': [],
+      'Matched': [],
     })
         .then((value) {
       print("Profile Added");

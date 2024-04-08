@@ -15,14 +15,49 @@ class _MatchPageState extends State<MatchPage> {
   final CardSwiperController controller = CardSwiperController();
   late Future<QuerySnapshot<Map<String, dynamic>>> _userFuture;
   List<DocumentSnapshot>? _userData;
+  List<String>? matchedArray;
+  List<String>? notMatchedArray;
+
+
 
  
     @override
   void initState() {
+
     super.initState();
+     fetchUserData(); 
     controller.dispose();
-    _userFuture = FirebaseFirestore.instance.collection('users').get();
+    _userFuture = FirebaseFirestore.instance
+      .collection('users')
+      .where(FieldPath.documentId, isNotEqualTo: widget.userId)
+      .get();
+
+    
+
+      
   }
+
+  Future<void> fetchUserData() async {
+  try {
+    DocumentSnapshot<Map<String, dynamic>> userSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .get();
+
+    if (userSnapshot.exists) {
+      // Ensure to cast the fetched data to List<String>
+      matchedArray = List<String>.from(userSnapshot.data()?['Matched'] ?? []);
+      notMatchedArray = List<String>.from(userSnapshot.data()?['notMatched'] ?? []);
+
+      print('Matched Array: $matchedArray');
+      print('Not Matched Array: $notMatchedArray');
+    } else {
+      print('User document does not exist');
+    }
+  } catch (error) {
+    print('Error fetching user data: $error');
+  }
+}
 
 
   bool _onSwipe(
@@ -92,7 +127,36 @@ debugPrint('Current User ID: ${userData[previousIndex].id}');
         } else if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
           return Text('No user data found');
         } else {
-          final userData = snapshot.data!.docs;
+         final userData = snapshot.data!.docs.where((doc) {
+          final userId = doc.id;
+
+          // Check if the current user ID is not in the matchedArray
+          return !matchedArray!.contains(userId) && !notMatchedArray!.contains(userId);
+
+        }).toList();
+
+        
+
+        print('Filtered User Data:');
+        userData.forEach((doc) {
+          print('Document ID: ${doc.id}');
+        });
+        print("length");
+        print( userData.length);
+
+
+          if (userData.isEmpty) {
+          return Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('No more users to match.'),
+              ],
+            ),
+            color: Colors.blue,
+          );
+        }
           List<Widget> fetchedData = userData.map((doc) {
             final name = doc['displayName'];
             final favoriteFood = doc['favoriteFood'];
