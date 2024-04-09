@@ -1,6 +1,4 @@
 import 'package:bubble/bubble.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/message.dart';
@@ -29,11 +27,11 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     _tcpBloc =  BlocProvider.of<TcpBloc>(context);
 
-    _nameChattingController = new TextEditingController(text: "Andy");
+    _nameChattingController = TextEditingController(text: "Andy");
     // _hostEditingController = new TextEditingController(text: '127.0.0.1');
     // _portEditingController = new TextEditingController(text: '6666');
-    _nickEditingController = new TextEditingController(text: 'John');
-    _chatTextEditingController = new TextEditingController(text: '');
+    _nickEditingController = TextEditingController(text: 'John');
+    _chatTextEditingController = TextEditingController(text: '');
 
     _chatTextEditingController!.addListener(() {
       setState(() {
@@ -46,14 +44,14 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat'),
+        title: const Text('Chat'),
         actions: [
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) {
-                  return AboutPage();
+                  return const AboutPage();
                 }
               ));
             },
@@ -65,12 +63,12 @@ class _MainPageState extends State<MainPage> {
         listener: (BuildContext context, TcpState tcpState) { 
           if (tcpState.connectionState == SocketConnectionState.Connected) {
             ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar();
+              .hideCurrentSnackBar();
           } else if (tcpState.connectionState == SocketConnectionState.Failed) {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
-                SnackBar(
+                const SnackBar(
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [Text("Connection failed"), Icon(Icons.error)],
@@ -97,7 +95,7 @@ class _MainPageState extends State<MainPage> {
                   // ),
                   TextFormField(
                     controller: _nameChattingController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       helperText: 'The name of the user you\'d like to chat with',
                       hintText: 'Enter the name here, e. g. Andy',
                     ),
@@ -113,13 +111,13 @@ class _MainPageState extends State<MainPage> {
                   // ),
                   TextFormField(
                     controller: _nickEditingController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       helperText: 'The nickname of the client joining the TCP server',
                       hintText: 'Enter the nickname here, e. g. Tejinder',
                     ),
                   ),
                   ElevatedButton(
-                    child: Text('Connect'),
+                    child: const Text('Connect'),
                     // onPressed: isValidHost(_hostEditingController!.text) && isValidPort(_portEditingController!.text)
                     //   ? () {
                       onPressed: () {
@@ -153,10 +151,10 @@ class _MainPageState extends State<MainPage> {
             return Center(
               child: Column(
                 children: <Widget>[
-                  CircularProgressIndicator(),
-                  Text('Connecting...'),
+                  const CircularProgressIndicator(),
+                  const Text('Connecting...'),
                   ElevatedButton(
-                    child: Text('Abort'),
+                    child: const Text('Abort'),
                     onPressed: () {
                       _tcpBloc!.add(Disconnect());
                     },
@@ -176,8 +174,8 @@ class _MainPageState extends State<MainPage> {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Bubble(
-                            child: Text(m.message),
                             alignment: m.sender == Sender.Client ? Alignment.centerRight : Alignment.centerLeft,
+                            child: Text(m.message),
                           ),
                         );
                       }
@@ -190,14 +188,14 @@ class _MainPageState extends State<MainPage> {
                     children: [
                       Expanded(
                         child: TextField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: 'Message'
                           ),
                           controller: _chatTextEditingController,
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.send),
+                        icon: const Icon(Icons.send),
                         onPressed: _chatTextEditingController!.text.isEmpty
                           ? null
                           : () {
@@ -209,7 +207,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 ElevatedButton(
-                  child: Text('Disconnect'),
+                  child: const Text('Disconnect'),
                   onPressed: () {
                     _tcpBloc!.add(Disconnect());
                   },

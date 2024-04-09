@@ -80,7 +80,7 @@ debugPrint('Current User ID: ${userData[previousIndex].id}');
 
   if (currentIndex == null) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('No more users to match'),
         behavior: SnackBarBehavior.fixed,
       ),
@@ -121,11 +121,11 @@ debugPrint('Current User ID: ${userData[previousIndex].id}');
       future: _userFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Text('Error fetching data');
+          return const Text('Error fetching data');
         } else if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
-          return Text('No user data found');
+          return const Text('No user data found');
         } else {
          final userData = snapshot.data!.docs.where((doc) {
           final userId = doc.id;
@@ -138,9 +138,9 @@ debugPrint('Current User ID: ${userData[previousIndex].id}');
         
 
         print('Filtered User Data:');
-        userData.forEach((doc) {
+        for (var doc in userData) {
           print('Document ID: ${doc.id}');
-        });
+        }
         print("length");
         print( userData.length);
 
@@ -148,13 +148,13 @@ debugPrint('Current User ID: ${userData[previousIndex].id}');
           if (userData.isEmpty) {
           return Container(
             alignment: Alignment.center,
-            child: Column(
+            color: Colors.blue,
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('No more users to match.'),
               ],
             ),
-            color: Colors.blue,
           );
         }
           List<Widget> fetchedData = userData.map((doc) {
@@ -163,6 +163,7 @@ debugPrint('Current User ID: ${userData[previousIndex].id}');
             final usersID = doc.id;
             return Container(
               alignment: Alignment.center,
+              color: Colors.blue,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -171,7 +172,6 @@ debugPrint('Current User ID: ${userData[previousIndex].id}');
                   Text('favorite Foods: $favoriteFood'),
                 ],
               ),
-              color: Colors.blue,
             );
           }).toList();
           return Scaffold(

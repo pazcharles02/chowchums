@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import './create_profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chowchums/tcp_client/tcp_client.dart';
 import 'match_page.dart';
@@ -22,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _pages = [
-      App(),
+      const App(),
       MatchPage(userId: widget.userId),
       ProfilePage(userId: widget.userId),
       MatchedListPage(userId: widget.userId),
@@ -77,12 +76,12 @@ class HomePageContent extends StatelessWidget {
       future: FirebaseFirestore.instance.collection('users').doc(userId).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Text('Error fetching data');
+          return const Text('Error fetching data');
         } else {
           final displayName = snapshot.data!.get('displayName');
-          return Center(
+          return const Center(
           );
         }
       },

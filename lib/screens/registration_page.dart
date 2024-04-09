@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import './home_page.dart';
 import './create_profile_page.dart';
 
 class RegistrationPage extends StatelessWidget {
@@ -22,7 +21,7 @@ class RegistrationPage extends StatelessWidget {
 
         if (password.length < 6) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Password must be at least 6 characters long.'),
               duration: Duration(seconds: 2),
               behavior: SnackBarBehavior.floating,
@@ -44,7 +43,7 @@ class RegistrationPage extends StatelessWidget {
           }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Passwords do not match. Please make sure the passwords match.'),
               duration: Duration(seconds: 2),
               behavior: SnackBarBehavior.floating,
@@ -55,8 +54,8 @@ class RegistrationPage extends StatelessWidget {
         print('Failed to register user: $err');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to register user: $err'),
-            duration: Duration(seconds: 2),
+            content: Text('Failed to register user: email already in use'),
+            duration: const Duration(seconds: 2),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -66,7 +65,7 @@ class RegistrationPage extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -76,33 +75,33 @@ class RegistrationPage extends StatelessWidget {
                 width: 150,
                 fit: BoxFit.contain,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 obscureText: true,
                 controller: passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 10), // Adjusted height
+              const SizedBox(height: 10), // Adjusted height
               TextField(
                 obscureText: true,
                 controller: confirmPasswordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Confirm Password',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   registerUser(context);
@@ -111,14 +110,14 @@ class RegistrationPage extends StatelessWidget {
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Colors.black,
                 ),
-                child: Text('Register'),
+                child: const Text('Register'),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('Go back to Login'),
+                child: const Text('Go back to Login'),
               ),
             ],
           ),

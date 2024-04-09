@@ -44,7 +44,7 @@ class TcpBloc extends Bloc<TcpEvent, TcpState> {
       _socket = await _socketConnectionTask!.socket;
 
       _socketStreamSub = _socket!.asBroadcastStream().listen((event) {
-        this.add(
+        add(
             MessageReceived(
                 message: Message(
                   message: String.fromCharCodes(event),

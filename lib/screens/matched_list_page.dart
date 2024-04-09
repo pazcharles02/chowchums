@@ -65,19 +65,19 @@ class _MatchedListPageState extends State<MatchedListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Matched Users'),
+        title: const Text('Matched Users'),
       ),
       body: FutureBuilder<List<DocumentSnapshot<Map<String, dynamic>>>>(
         future: _matchedUsersFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
               child: Text('Error: ${snapshot.error}'), // Display the error message
             );
           } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('No matched users found'),
             );
           } else {
@@ -112,7 +112,7 @@ class UserDetailsPage extends StatelessWidget {
     // Fetch user details using the provided userId
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Details'),
+        title: const Text('User Details'),
       ),
       body: Center(
         child: Text('User ID: $userId'), // Display user details here

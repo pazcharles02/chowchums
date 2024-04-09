@@ -19,6 +19,9 @@ class CreateProfilePage extends StatefulWidget {
 class _CreateProfilePageState extends State<CreateProfilePage> {
   TextEditingController displayNameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
+  TextEditingController birthdateController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+
   String? selectedFood;
   List<String> foodOptions = [
     'Pizza', 'Burger', 'Sushi', 'Pasta', 'Salad', 'Tacos', 'Steak', 'Ramen', 'Curry', 'Fried Chicken',
@@ -55,7 +58,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     'Goulash', 'Gumbo', 'Hot Dog', 'Ice Cream', 'Jerk Chicken', 'Key Lime Pie', 'Lemon Meringue Pie',
     'Linguine', 'Lobster Mac and Cheese', 'Mango Lassi', 'Margherita Pizza', 'Martini', 'Mimosa',
     'Miso Soup', 'Mojito', 'Moussaka', 'Mulligatawny Soup', 'Nachos', 'Pad See Ew', 'Pad Thai',
-    'Pancakes', 'Panna Cotta', 'Peach Cobbler', 'Peach Pie', 'Pesto', 'Pho', 'Pierogi', 'Pineapple Fried Rice',
+    'Pancakes', 'Panna Cotta', 'Peach Cobbler', 'Peach Pie', 'Pesto', 'Pierogi', 'Pineapple Fried Rice',
     'Pot Roast', 'Prime Rib', 'Pulled Pork Sandwich', 'Quesadillas', 'Quiche', 'Ratatouille', 'Ravioli',
     'Risotto', 'Roast Chicken', 'Roast Pork', 'Samosas', 'Sangria', 'Sashimi', 'Scallops', 'Scone',
     'Scotch Egg', 'Shrimp and Grits', 'Shrimp Cocktail', 'Smoked Salmon', 'Smoothie', 'Sorbet',
@@ -74,11 +77,11 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false, // this prevents user from using back space true if you want to let them
+      canPop: false,
       child: Scaffold(
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(50.0),
+            padding: const EdgeInsets.all(50.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -88,7 +91,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                     fontSize: 24,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
                     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -96,42 +99,37 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                       await _uploadProfilePicture(image.path);
                     }
                   },
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
+                  child: Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height / 7,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      image: DecorationImage(
+                        image: _profileImageUrl == null || _profileImageUrl!.isEmpty
+                            ? const AssetImage('assets/images/default_picture.png')
+                            : NetworkImage(_profileImageUrl!) as ImageProvider,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Container(
+                        margin: const EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.all(4.0),
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.grey, width: 2.0),
+                          color: Colors.white,
                         ),
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage: _profileImageUrl == null || _profileImageUrl!.isEmpty
-                              ? AssetImage('assets/images/default_picture.png')
-                              : NetworkImage(_profileImageUrl!) as ImageProvider,
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          padding: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                          child: Icon(
-                            Icons.camera_alt,
-                            size: 20,
-                            color: Colors.grey,
-                          ),
+                        child: const Icon(
+                          Icons.camera_alt,
+                          size: 20,
+                          color: Colors.grey,
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextField(
                   controller: displayNameController,
                   maxLength: maxDisplayNameLength,
@@ -142,10 +140,10 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                   },
                   decoration: InputDecoration(
                     labelText: 'Display Name (Max $maxDisplayNameLength characters)',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 DropdownButtonFormField<String>(
                   value: selectedFood,
                   onChanged: (newValue) {
@@ -159,12 +157,28 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                       child: Text(food),
                     );
                   }).toList(),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Favorite Food',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: birthdateController,
+                  decoration: const InputDecoration(
+                    labelText: 'Birthdate (YYYY-MM-DD) Ages:18-125',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: cityController,
+                  decoration: const InputDecoration(
+                    labelText: 'City',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 20),
                 TextField(
                   controller: bioController,
                   maxLength: maxBioLength,
@@ -175,12 +189,12 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                   },
                   decoration: InputDecoration(
                     labelText: 'Bio (Max $maxBioLength characters)',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     counterText: '$currentBioLength/$maxBioLength',
                   ),
                   maxLines: null,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     saveProfile();
@@ -189,7 +203,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.black,
                   ),
-                  child: Text('Save Profile'),
+                  child: const Text('Save Profile'),
                 ),
               ],
             ),
@@ -202,6 +216,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
   void saveProfile() {
     String displayName = displayNameController.text.trim();
     String bio = bioController.text.trim();
+    String city = cityController.text.trim();
+    String birthdate = birthdateController.text.trim();
 
     if (displayName.isEmpty) {
       _showErrorSnackBar('Please enter a display name.');
@@ -213,13 +229,37 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
       return;
     }
 
-    if (bio.isEmpty) {
-      _showErrorSnackBar('Please enter a bio.');
+    if (selectedFood == null || selectedFood!.isEmpty) {
+      _showErrorSnackBar('Please select a favorite food.');
       return;
     }
 
-    if (selectedFood == null || selectedFood!.isEmpty) {
-      _showErrorSnackBar('Please select a favorite food.');
+    if (birthdate.isEmpty) {
+      _showErrorSnackBar('Please enter a birthdate.');
+      return;
+    }
+
+    // Validate Birthdate
+    DateTime? parsedDate;
+    try {
+      parsedDate = DateTime.parse(birthdate);
+    } catch (e) {
+      _showErrorSnackBar('Invalid birthdate format. Please use MM/DD/YYYY format.');
+      return;
+    }
+
+    if (parsedDate.year < DateTime.now().year - 125 || parsedDate.year > DateTime.now().year - 18) {
+      _showErrorSnackBar('Birthdate must be between 18 and 125 years old.');
+      return;
+    }
+
+    if (city.isEmpty) {
+      _showSnackBar('No city entered');
+      return;
+    }
+
+    if (bio.isEmpty) {
+      _showErrorSnackBar('Please enter a bio.');
       return;
     }
 
@@ -234,6 +274,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
       'favoriteFood': selectedFood,
       'biography': bio,
       'profileImageUrl': _profileImageUrl,
+      'birthdate': birthdate,
+      'city': city,
       'notMatched': [],
       'Matched': [],
     })
@@ -251,7 +293,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -261,7 +303,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
       ),
     );

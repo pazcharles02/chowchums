@@ -13,13 +13,13 @@ class TcpState {
   final SocketConnectionState connectionState;
   final List<Message> messages;
 
-  TcpState({
+  const TcpState({
     required this.connectionState,
     required this.messages,
   });
 
   factory TcpState.initial() {
-    return TcpState(
+    return const TcpState(
         connectionState: SocketConnectionState.None,
         messages: <Message>[]
     );
@@ -37,8 +37,8 @@ class TcpState {
 
   TcpState copyWithNewMessage({required Message message}) {
     return TcpState(
-      connectionState: this.connectionState,
-      messages: List.from(this.messages)..add(message),
+      connectionState: connectionState,
+      messages: List.from(messages)..add(message),
     );
   }
 }

@@ -24,7 +24,7 @@ void main() {
 
   testWidgets('Test create profile page', (WidgetTester tester) async {
     // Build the CreateProfilePage widget
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(const MaterialApp(
       home: CreateProfilePage(userId: 'hHYhclWAdxXAAtjzhat5AzerC3Q2'), // Provide a userId for testing
     ));
 
