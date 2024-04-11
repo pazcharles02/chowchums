@@ -142,7 +142,6 @@ class _MainPageState extends State<MainPage> {
                                         message: "/nick  ${widget.userId}"
                                     )
                                 );
-                                // print("nick: ${widget.userId}");
                               },
                               child: Card(
                                 margin: const EdgeInsets.all(7.5),
