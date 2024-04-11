@@ -3,12 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chowchums/tcp_client/pages/main_page.dart';
 import 'tcp_bloc/tcp_bloc.dart';
 
-class App extends StatefulWidget {
+class ChatPage extends StatefulWidget {
+  final String userId;
+  const ChatPage({Key? key, required this.userId}) : super(key: key);
+
   @override
-  _AppState createState() => _AppState();
+  _ChatPageState createState() => _ChatPageState();
 }
 
-class _AppState extends State<App> {
+class _ChatPageState extends State<ChatPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -16,7 +24,7 @@ class _AppState extends State<App> {
         BlocProvider<TcpBloc>(create: (context) => TcpBloc()),
       ],
       child: MaterialApp(
-        home: MainPage(),
+        home: MainPage(userId: widget.userId),
       ),
     );
   }

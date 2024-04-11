@@ -7,13 +7,13 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('About'),
+        title: const Text('About'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
           child: ListView(
-            children: [
+            children: const [
               Text('Flutter TCP Demo'),
               Text('created by Julian Aßmann (julianassmann.de)'),
               Text('created with Flutter')
