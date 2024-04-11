@@ -14,6 +14,8 @@ jobs:
         with:
           flutter-version: '3.10.0'
           channel: 'stable'
+      - name: update flutter
+        run: flutter upgrade -v
 
       - name: Get dependencies
         run: flutter pub get
