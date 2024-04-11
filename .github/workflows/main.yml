@@ -4,28 +4,19 @@ on:
     branches: [ master/prod, debug/dev ]
   pull_request: 
     branches: [ master/prod, debug/dev ]
-
+    
 jobs:
-  build: 
+  build:
     runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout
-        uses: actions/checkout@v4.1.1
-        
-      - name: Setup Java
-        uses: actions/setup-java@v3
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
-          distribution: "zulu"
-          java-version: "21"
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2.18.0
-        with:
-          flutter-version: "2.18.0"
-          channel: "beta"
+          flutter-version: '3.10.0'
+          channel: 'stable'
+      - name: update flutter
+        run: flutter upgrade -v
 
-      - name: Upgrade Dart
-        run: dart pub get
-        
       - name: Get dependencies
         run: flutter pub get
         
