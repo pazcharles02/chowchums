@@ -4,24 +4,18 @@ on:
     branches: [ master/prod, debug/dev ]
   pull_request: 
     branches: [ master/prod, debug/dev ]
-
+    
 jobs:
-  build: 
+  build:
     runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout
-        uses: actions/checkout@v4.1.1
-        
-      - name: Setup Java
-        uses: actions/setup-java@v3
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
-          distribution: "zulu"
-          java-version: "21"
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2.12.0
-        with:
-          flutter-version: "2.12.0"
-          channel: "stable"
+          flutter-version: '3.3.10'
+      - run: |
+         git config --global --add safe.directory /opt/hostedtoolcache/flutter/stable-3.3.10-x64
+         flutter build bundle
 
       - name: Upgrade Dart
         run: dart pub get
