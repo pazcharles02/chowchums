@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chowchums/tcp_client/tcp_client.dart';
 import 'match_page.dart';
 import 'profile_page.dart';
-import 'matched_list_page.dart'; // I
+import 'matched_list_page.dart';
 
 class HomePage extends StatefulWidget {
   final String userId;

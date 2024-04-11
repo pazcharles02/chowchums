@@ -129,11 +129,16 @@ class _MatchPageState extends State<MatchPage> {
           if (userData.isEmpty) {
             return Container(
               alignment: Alignment.center,
-              color: Colors.blue,
+              color: Colors.red,
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('No more users to match.'),
+                  Text(
+                    'No more users to match.',
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
                 ],
               ),
             );
@@ -142,12 +147,17 @@ class _MatchPageState extends State<MatchPage> {
           List<Widget> fetchedData = userData.map((doc) {
             final name = doc['displayName'];
             final favoriteFood = doc['favoriteFood'];
-            final usersID = doc.id;
             final imageURL = doc['profileImageUrl'];
             final bio = doc['biography'];
 
+            final birthdateField = doc['birthdate'];
+            final birthdate = birthdateField != null ? DateTime.parse(birthdateField) : null;
+            final age = birthdate != null ? DateTime.now().year - birthdate.year : null;
+
+            final city = doc['city'];
+  
             return Container(
-              color: Colors.blue,
+              color: Colors.red,
               child: Column(
                 children: [
                   Expanded(
@@ -172,7 +182,7 @@ class _MatchPageState extends State<MatchPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '$name',
+                          '$name , $age',
                           style: TextStyle(color: Colors.white),
                         ),
                         Text(
@@ -180,7 +190,11 @@ class _MatchPageState extends State<MatchPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                         Text(
-                          '$bio',
+                          '$city',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          'Biography: $bio',
                           style: TextStyle(color: Colors.white),
                         ),
                       ],

@@ -51,5 +51,40 @@ void main() {
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.text('Passwords do not match'), findsOneWidget);
   });
+  // load testing
+  testWidgets('Test registration page - Register 1000 users', (WidgetTester tester) async {
+  int registeredUsersCount = 0; // Initialize counter for registered users
+
+  await tester.pumpWidget(MaterialApp(
+    home: RegistrationPage(auth: authMock),
+  ));
+
+  // Loop to register 10000 users
+  for (int i = 0; i < 10000; i++) {
+    final emailField = find.byType(TextField).at(0);
+    final passwordField = find.byType(TextField).at(1);
+    final confirmPasswordField = find.byType(TextField).at(2);
+    final registerButton = find.text('Register');
+
+    // Generate unique email for each user
+    String email = 'user$i@example.com';
+    String password = 'password'; // You can use the same password for simplicity
+
+    await tester.enterText(emailField, email);
+    await tester.enterText(passwordField, password);
+    await tester.enterText(confirmPasswordField, password);
+
+    await tester.tap(registerButton);
+    await tester.pumpAndSettle();
+
+    // Increment registered users count
+    registeredUsersCount++;
+  }
+
+  // Assert that 1000 users were registered
+  expect(registeredUsersCount, 10000);
+});
 }
+
+
 
