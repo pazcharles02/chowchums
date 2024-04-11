@@ -20,18 +20,18 @@ class Connect extends TcpEvent {
     port: $port
   }''';
 }
-//
-// class AddName extends TcpEvent {
-//   final dynamic name;
-//
-//   AddName({required this.name})
-//     : assert(name != null);
-//
-//   @override
-//   String toString() => '''AddName {
-//     name: $name
-//   }''';
-// }
+
+class AddName extends TcpEvent {
+  final dynamic name;
+
+  AddName({required this.name})
+    : assert(name != null);
+
+  @override
+  String toString() => '''AddName {
+    name: $name
+  }''';
+}
 
 /// Represents a request to disconnect from the server or abort the current connection request.
 class Disconnect extends TcpEvent {

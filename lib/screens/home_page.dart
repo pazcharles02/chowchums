@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _pages = [
-      const App(),
+      ChatPage(userId: widget.userId),
       MatchPage(userId: widget.userId),
       ProfilePage(userId: widget.userId),
       MatchedListPage(userId: widget.userId),
