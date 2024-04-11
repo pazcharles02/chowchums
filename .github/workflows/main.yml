@@ -21,7 +21,7 @@ jobs:
         uses: subosito/flutter-action@v2.12.0
         with:
           flutter-version: "2.18.0"
-          channel: "beta"
+          channel: "stable"
 
       - name: Upgrade Dart
         run: dart pub get
