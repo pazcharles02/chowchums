@@ -117,13 +117,9 @@ class _MainPageState extends State<MainPage> {
                                 _tcpBloc!.add(
                                     Connect(
                                         host: Constants.chatServerAddress,
-                                        // port: int.parse(_portEditingController!.text)
                                         port: 8212
                                     )
                                 );
-                                // print("Connecting to: ${Constants
-                                //     .chatServerAddress}");
-                                // print("sending nickname to server");
                                 var initializedMessages = <Message>[];
                                 if (chatLogs["users"][_IDChatting]["messages"] != null) {
                                   var dbMessages = chatLogs["users"][_IDChatting]["messages"];
