@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(16.0, 64.0, 16.0, 16.0), // Adjust top padding
+          padding: const EdgeInsets.fromLTRB(16.0, 64.0, 16.0, 16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -26,26 +26,26 @@ class LoginPage extends StatelessWidget {
                 width: 150,
                 fit: BoxFit.contain,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Username',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 obscureText: true,
                 controller: passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
-                key: Key('login_button'), 
+                key: const Key('login_button'),
                 onPressed: () async {
                   try {
                     String username = usernameController.text;
@@ -64,15 +64,21 @@ class LoginPage extends StatelessWidget {
 
                   } catch(error) {
                     print('login failed');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('Email/Password is incorrect'),
+                        duration: const Duration(seconds: 3),
+                      ),
+                    );
                   }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Colors.black,
                 ),
-                child: Text('Login'),
+                child: const Text('Login'),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -80,7 +86,7 @@ class LoginPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => RegistrationPage(auth: _auth)),
                   );
                 },
-                child: Text('Create an Account'),
+                child: const Text('Create an Account'),
               ),
             ],
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 final ThemeData myTheme = ThemeData(
-  colorScheme: ColorScheme(
+  colorScheme: const ColorScheme(
     primary: Color(0xFFF9DE34), // You can define a variant if needed
     secondary: Color(0xFFF9DE34), // Accent color variant
     surface: Color(0xFFFFFFFF), // Surface color

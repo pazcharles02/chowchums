@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
       theme: myTheme,
       initialRoute: '/', // Set initial route
       routes: {
-        '/': (context) => LoginPage(), //'/' is route to LoginPage
-        '/login': (context) => LoginPage(), //'/login' routing to LoginPage
+        '/': (context) => const LoginPage(), //'/' is route to LoginPage
+        '/login': (context) => const LoginPage(), //'/login' routing to LoginPage
         // Add other routes as needed
       },
     );

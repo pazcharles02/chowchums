@@ -15,12 +15,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String _profileImageUrl = ""; // Store profile image URL chowchums-2c5b3.appspot.com
+  String _profileImageUrl = "";
 
   void _signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      // Navigate to login page after log out
       Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
     } catch (e) {
       print("Error signing out: $e");
@@ -40,11 +39,18 @@ class _ProfilePageState extends State<ProfilePage> {
           .update({'profileImageUrl': url});
       setState(() {
         _profileImageUrl = url;
-        print("SSSSSSSSSSSSSSSSSSSSS" + _profileImageUrl);
+        print("Profile Image URL: $_profileImageUrl");
       });
     } catch (e) {
       print("Error uploading profile picture: $e");
     }
+  }
+
+  int _calculateAge(DateTime birthdate) {
+    final now = DateTime.now();
+    final difference = now.difference(birthdate);
+    final age = (difference.inDays / 365).floor();
+    return age;
   }
 
   @override
@@ -53,58 +59,79 @@ class _ProfilePageState extends State<ProfilePage> {
       future: FirebaseFirestore.instance.collection('users').doc(widget.userId).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Text('Error fetching data');
+          return const Text('Error fetching data');
         } else {
           final displayName = snapshot.data!.get('displayName');
-          _profileImageUrl = snapshot.data!.get('profileImageUrl');
-          // final bio = snapshot.data!.get('biography');
-          // print("AAAAAAAAAAAAAAAAAAAAAAAAA" + _profileImageUrl + "AAAAAA" + bio);
+          final bio = snapshot.data!.get('biography');
+          final age = _calculateAge(DateTime.parse(snapshot.data!.get('birthdate')));
+          _profileImageUrl = snapshot.data!.get('profileImageUrl') ?? ""; //null checker
+
           return Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 50), // Added space above profile picture
-                  // Profile picture section
-                  GestureDetector(
+            body: Column(
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.33,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: _profileImageUrl.isEmpty
+                          ? const AssetImage('assets/images/default_picture.png')
+                          : NetworkImage(_profileImageUrl) as ImageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: GestureDetector(
                     onTap: () async {
-                      // Handle image selection (use a library like image_picker)
                       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
                       if (image != null) {
                         await _uploadProfilePicture(image.path);
                       }
                     },
-                    child: Container(
-                      width: 100, // Fixed width
-                      height: 100, // Fixed height
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundImage: _profileImageUrl.isEmpty
-                            ? AssetImage('assets/images/default_picture.png') // Use AssetImage for local image
-                            : NetworkImage(_profileImageUrl) as ImageProvider,
-                      ),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '$displayName',
+                                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                '$age',
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Divider(thickness: .5, color: Colors.black),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Center(
+                            child: Text(
+                              '$bio',
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Center(
-                      child: Text(
-                        '$displayName',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                  ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(20.0),
-                  //   child: Text(
-                  //     '$bio',
-                  //     style: TextStyle(fontSize: 24),
-                  //   ),
-                  // ),
-                ],
-              ),
+                ),
+              ],
             ),
             floatingActionButton: ElevatedButton(
               onPressed: _signOut,
@@ -112,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 backgroundColor: Colors.deepOrange,
                 foregroundColor: Colors.black,
               ),
-              child: Text('Logout'),
+              child: const Text('Logout'),
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           );
