@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MatchedListPage extends StatefulWidget {
   final String userId;
-
   const MatchedListPage({Key? key, required this.userId}) : super(key: key);
 
   @override
@@ -50,16 +49,15 @@ class _MatchedListPageState extends State<MatchedListPage> {
     }
     return matchedUserDocs;
   }
-
-  void _navigateToUserDetail(String userId) {
-    // Navigate to user detail page, passing the userId
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => UserDetailsPage(userId: userId),
-      ),
-    );
-  }
+void _navigateToUserDetail(String userId, String otherUserId) {
+  // Navigate to user detail page, passing both userId and otherUserId
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => UserDetailsPage(userId: userId, otherUserId: otherUserId),
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +85,7 @@ class _MatchedListPageState extends State<MatchedListPage> {
                 String displayName = snapshot.data![index].get('displayName') ?? 'Unknown';
                 String userId = snapshot.data![index].id; // Get user ID
                 return GestureDetector(
-                  onTap: () => _navigateToUserDetail(userId),
+                  onTap: () => _navigateToUserDetail(userId, widget.userId),
                   child: ListTile(
                     title: Text(displayName),
                     // Add more information about the matched user if needed
@@ -102,20 +100,102 @@ class _MatchedListPageState extends State<MatchedListPage> {
   }
 }
 
-class UserDetailsPage extends StatelessWidget {
+class UserDetailsPage extends StatefulWidget {
   final String userId;
+  final String otherUserId;
 
-  const UserDetailsPage({Key? key, required this.userId}) : super(key: key);
+  const UserDetailsPage({Key? key, required this.userId, required this.otherUserId}) : super(key: key);
+
+  @override
+  _UserDetailsPageState createState() => _UserDetailsPageState();
+}
+
+class _UserDetailsPageState extends State<UserDetailsPage> {
+  final TextEditingController _messageController = TextEditingController();
+
+  void _sendMessage() async {
+    String message = _messageController.text.trim();
+    if (message.isNotEmpty) {
+      await FirebaseFirestore.instance
+          .collection('chats')
+          .doc(_getChatId(widget.userId, widget.otherUserId))
+          .collection('messages')
+          .add({
+        'message': message,
+        'senderId': widget.userId,
+        'timestamp': Timestamp.now(),
+      });
+
+      // Clear the text field after sending the message
+      _messageController.clear();
+    }
+  }
+
+  String _getChatId(String userId1, String userId2) {
+    List<String> userIds = [userId1, userId2];
+    userIds.sort();
+    return userIds.join('_');
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Fetch user details using the provided userId
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Details'),
       ),
-      body: Center(
-        child: Text('User ID: $userId'), // Display user details here
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('chats')
+                  .doc(_getChatId(widget.userId, widget.otherUserId))
+                  .collection('messages')
+                  .orderBy('timestamp', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                List<DocumentSnapshot> messages = snapshot.data!.docs;
+
+                return ListView.builder(
+                  reverse: true, // To display the latest message at the bottom
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    String message = messages[index]['message'];
+                    String senderId = messages[index]['senderId'];
+
+                    return ListTile(
+                      title: Text(message),
+                      subtitle: Text(senderId),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: InputDecoration(
+                      hintText: 'Type a message...',
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: _sendMessage,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

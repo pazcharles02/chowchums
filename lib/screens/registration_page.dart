@@ -1,6 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './create_profile_page.dart';
+import 'dart:math';
+
+class RandomUser {
+  final String email;
+  final String password;
+
+  RandomUser(this.email, this.password);
+}
+
+Future<void> registerRandomUsers(BuildContext context, int count) async {
+  try {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    for (int i = 0; i < count; i++) {
+      String email = 'user${Random().nextInt(1000)}@example.com'; // Generating random email
+      String password = 'password${Random().nextInt(1000)}'; // Generating random password
+
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (userCredential.user != null) {
+        // User registration successful
+        print('User registered successfully: ${userCredential.user!.email}');
+        // Optionally, you can navigate to another page or perform other actions here
+      }
+    }
+  } catch (error) {
+    // Handle registration errors
+    print('Failed to register user: $error');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Failed to register user: $error'),
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+}
 
 class RegistrationPage extends StatelessWidget {
   final FirebaseAuth auth;
@@ -77,6 +117,7 @@ class RegistrationPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
+                key: Key('emailTextField'),
                 controller: usernameController,
                 decoration: const InputDecoration(
                   labelText: 'Email',
@@ -85,6 +126,7 @@ class RegistrationPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               TextField(
+                key: Key('passwordTextField'),
                 obscureText: true,
                 controller: passwordController,
                 decoration: const InputDecoration(
@@ -94,6 +136,7 @@ class RegistrationPage extends StatelessWidget {
               ),
               const SizedBox(height: 10), // Adjusted height
               TextField(
+                key: Key('confirmPasswordTextField'),
                 obscureText: true,
                 controller: confirmPasswordController,
                 decoration: const InputDecoration(
