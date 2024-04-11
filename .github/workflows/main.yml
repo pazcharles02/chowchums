@@ -2,9 +2,9 @@ name: App Dev Build
 on:
   push:
     branches: [ prod, debug/dev ]
-  pull_request:
+  pull_request: 
     branches: [ prod, debug/dev ]
-
+    
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,9 +19,9 @@ jobs:
 
       - name: Get dependencies
         run: flutter pub get
-
+        
       - name: Start release build
-        run: flutter build appbundle
-
+        run: flutter build appbundle        
+        
       - name: Run tests
         run: flutter test test
