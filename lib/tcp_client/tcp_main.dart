@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:chowchums/tcp_client/tcp_client.dart';
+import 'package:firebase_core/firebase_core.dart';
+import '../firebase_options.dart';
 
-void main() {
-  runApp(const ChatPage(userId: "LzQnfX8jtsTR6Z0LGI0FhUd1txi2"));
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(ChatPage(userId: "79zlUjIvwhYSnRd5qsF3NTDjNai2"));
 }
 

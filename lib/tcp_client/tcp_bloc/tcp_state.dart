@@ -41,4 +41,27 @@ class TcpState {
       messages: List.from(messages)..add(message),
     );
   }
+
+  TcpState initializeMessages({required List<Message> messages}) {
+    return TcpState(
+      connectionState: connectionState,
+      messages: messages,
+    );
+  }
+
+  String messagesToString() {
+    var messagesAsString = "[";
+    for (var messageCounter = 0; messageCounter < messages.length; messageCounter++) {
+      messagesAsString += "{";
+      messagesAsString += "DateTime: ${messages[messageCounter].timestamp.toString()}, ";
+      messagesAsString += "Sender: ${messages[messageCounter].sender.index}, ";
+      messagesAsString += "message: ${messages[messageCounter].message}}";
+      if (messages.length - messageCounter > 1) {
+        messagesAsString += ", ";
+      }
+    }
+    messagesAsString += "]";
+    return messagesAsString;
+  }
+  // [{Sender: 0, message: hi!, DateTime: 2024-04-08 01:46:05.865433}, {Sender: 1, message: bye!, DateTime: 2024-04-08 02:46:05.865433}]
 }

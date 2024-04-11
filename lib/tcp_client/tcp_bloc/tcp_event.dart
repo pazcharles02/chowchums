@@ -78,3 +78,9 @@ class ConnectHost extends TcpEvent {
   @override
   String toString() => 'ConnectHost { }';
 }
+
+class InitializeMessages extends TcpEvent {
+  final List<Message> initializedMessages;
+
+  InitializeMessages({required this.initializedMessages});
+}

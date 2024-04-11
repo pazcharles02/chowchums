@@ -34,6 +34,8 @@ class TcpBloc extends Bloc<TcpEvent, TcpState> {
       yield* _mapSendMessageToState(event);
     } else if (event is ConnectHost) {
       yield* _ConnectHost(event);
+    } else if (event is InitializeMessages) {
+      yield* _InitializeMessages(event);
     }
   }
 
@@ -97,6 +99,10 @@ class TcpBloc extends Bloc<TcpEvent, TcpState> {
     if (_socket != null) {
       _socket!.writeln(event.message);
     }
+  }
+
+  Stream<TcpState> _InitializeMessages(InitializeMessages event) async* {
+    yield state.initializeMessages(messages: event.initializedMessages);
   }
 
   @override
