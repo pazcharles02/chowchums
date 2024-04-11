@@ -18,7 +18,7 @@ jobs:
           distribution: "zulu"
           java-version: "21"
       - name: Setup Flutter
-        uses: subosito/flutter-action@v2.18.0
+        uses: subosito/flutter-action@v2.12.0
         with:
           flutter-version: "2.18.0"
           channel: "beta"
