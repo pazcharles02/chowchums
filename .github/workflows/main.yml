@@ -1,9 +1,9 @@
 name: App Dev Build
 on:
   push:
-    branches: [ master/prod, debug/dev ]
+    branches: [ prod, debug/dev ]
   pull_request: 
-    branches: [ master/prod, debug/dev ]
+    branches: [ prod, debug/dev ]
     
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
         run: flutter pub get
         
       - name: Start release build
-        run: flutter build appbundle
+        run: flutter build appbundle        
 
       - name: Run tests
         run: flutter test test

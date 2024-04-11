@@ -15,21 +15,15 @@ import 'package:chowchums/screens/create_profile_page.dart';
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
 void main() {
-  // Create a mock FirebaseAuth instance
-  late MockFirebaseAuth authMock;
-
-  setUp(() {
-    authMock = MockFirebaseAuth();
-  });
 
   testWidgets('Test create profile page', (WidgetTester tester) async {
     // Build the CreateProfilePage widget
     await tester.pumpWidget(const MaterialApp(
-      home: CreateProfilePage(userId: 'hHYhclWAdxXAAtjzhat5AzerC3Q2'), // Provide a userId for testing
+      home: CreateProfilePage(userId: 'rgyHvjwoKzW7fm6WHtkMZqPcZ9W2'), // Provide a userId for testing
     ));
 
     // Verify if 'Create Profile Page' text is present
-    expect(find.text('Create Profile Page'), findsOneWidget);
+    expect(find.text('Create your profile!'), findsOneWidget);
 
 
     
