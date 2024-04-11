@@ -28,7 +28,11 @@ class TcpBloc extends Bloc<TcpEvent, TcpState> {
       yield* _mapErrorToState();
     } else if (event is MessageReceived) {
       if (event.message.message.length > 2) {
-        yield state.copyWithNewMessage(message: event.message);
+        yield state.copyWithNewMessage(message: Message(
+          timestamp: event.message.timestamp,
+          sender: event.message.sender,
+          message: event.message.message.substring(30)
+        ));
       }
     } else if (event is SendMessage) {
       yield* _mapSendMessageToState(event);

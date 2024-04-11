@@ -1,11 +1,11 @@
 import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../constants/constants.dart';
 import '../models/message.dart';
 import '../tcp_bloc/tcp_bloc.dart';
-import 'about_page.dart';
 
 class MainPage extends StatefulWidget {
   final String userId;
@@ -61,7 +61,6 @@ class _MainPageState extends State<MainPage> {
         } else if (snapshot.hasError) {
           return const Text('Error fetching data');
         } else {
-          final displayName = snapshot.data!.get('displayName');
           var chatLogs;
           var chatUsers = [];
           try {
@@ -75,9 +74,7 @@ class _MainPageState extends State<MainPage> {
             );
           }
           return Scaffold(
-            appBar: AppBar(
-              title: Text("Chat"),
-            ),
+            appBar: AppBar(),
             body: BlocConsumer<TcpBloc, TcpState>(
               bloc: _tcpBloc,
               listener: (BuildContext context, TcpState tcpState) {
@@ -195,6 +192,9 @@ class _MainPageState extends State<MainPage> {
                   // print("adding messages to initial state");
                   return Column(
                     children: [
+                      AppBar(
+                        title: Text("${chatLogs["users"][_IDChatting]["displayName"]}"),
+                      ),
                       Expanded(
                         child: Container(
                           child: ListView.builder(
