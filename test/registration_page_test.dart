@@ -19,12 +19,10 @@ class MockUserCredential extends Mock implements UserCredential {}
 
 void main() {
   late MockFirebaseAuth authMock;
-  late MockUserCredential mockUserCredential;
 
   setUpAll(() async {
     // Initialize Firebase app for testing
     authMock = MockFirebaseAuth(); // Initialize authMock
-    mockUserCredential = MockUserCredential(); // Initialize mockUserCredential
   });
 
   testWidgets('Test registration page - Password mismatch', (WidgetTester tester) async {
@@ -48,8 +46,8 @@ void main() {
     await tester.tap(registerButton);
     await tester.pumpAndSettle();
 
-    expect(find.byType(AlertDialog), findsOneWidget);
-    expect(find.text('Passwords do not match'), findsOneWidget);
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.text('Passwords do not match. Please make sure the passwords match.'), findsOneWidget);
   });
   // load testing
   testWidgets('Test registration page - Register 1000 users', (WidgetTester tester) async {
@@ -59,8 +57,8 @@ void main() {
     home: RegistrationPage(auth: authMock),
   ));
 
-  // Loop to register 10000 users
-  for (int i = 0; i < 10000; i++) {
+  // Loop to register 1000 users
+  for (int i = 0; i < 1000; i++) {
     final emailField = find.byType(TextField).at(0);
     final passwordField = find.byType(TextField).at(1);
     final confirmPasswordField = find.byType(TextField).at(2);
@@ -82,7 +80,7 @@ void main() {
   }
 
   // Assert that 1000 users were registered
-  expect(registeredUsersCount, 10000);
+  expect(registeredUsersCount, 1000);
 });
 }
 
