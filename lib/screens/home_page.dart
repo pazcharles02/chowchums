@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chowchums/tcp_client/tcp_client.dart';
 import 'match_page.dart';
 import 'profile_page.dart';
-import 'matched_list_page.dart';
 
 class HomePage extends StatefulWidget {
   final String userId;
@@ -24,7 +23,6 @@ class _HomePageState extends State<HomePage> {
       ChatPage(userId: widget.userId),
       MatchPage(userId: widget.userId),
       ProfilePage(userId: widget.userId),
-      MatchedListPage(userId: widget.userId),
     ];
   }
 
@@ -52,10 +50,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
-          BottomNavigationBarItem(
-          icon: Icon(Icons.message), // New button for Chat
-          label: 'Message',
-        ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).colorScheme.primary,
@@ -80,7 +74,6 @@ class HomePageContent extends StatelessWidget {
         } else if (snapshot.hasError) {
           return const Text('Error fetching data');
         } else {
-          final displayName = snapshot.data!.get('displayName');
           return const Center(
           );
         }
