@@ -27,12 +27,24 @@ class _MainPageState extends State<MainPage> {
     _chatTextEditingController = TextEditingController(text: '');
   }
 
-  Future<void> _uploadChatLog(String chatLog) async {
+  Future<void> uploadChatLog(List<Message> chatToUpdate) async {
     try {
       await FirebaseFirestore.instance
-          .collection('users')
-          .doc(widget.userId)
-          .update({"chatLog": chatLog});
+            .collection('users')
+            .doc(widget.userId)
+            .update({"chatLog.users.$_IDChatting.messages": []});
+
+      for (var messageCounter = 0; messageCounter < chatToUpdate.length; messageCounter++) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.userId)
+            .update({"chatLog.users.$_IDChatting.messages":
+        FieldValue.arrayUnion([{
+          "DateTime": chatToUpdate[messageCounter].timestamp.toString(),
+          "Sender": chatToUpdate[messageCounter].sender.index.toString(),
+          "message": chatToUpdate[messageCounter].message}])
+        });
+      }
     } catch (e) {
       print("Error uploading chat logs: $e");
     }
@@ -51,8 +63,10 @@ class _MainPageState extends State<MainPage> {
         } else {
           final displayName = snapshot.data!.get('displayName');
           var chatLogs;
+          var chatUsers = [];
           try {
             chatLogs = snapshot.data!.get('chatLog');
+            chatUsers = chatLogs["users_list"];
           } catch (e) {
             return Scaffold(
               appBar: AppBar(
@@ -60,22 +74,9 @@ class _MainPageState extends State<MainPage> {
               ),
             );
           }
-          var chatUsers = chatLogs[0]["users_list"];
           return Scaffold(
             appBar: AppBar(
-              title: Text("Chats of $displayName!"),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.info_outline),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return const AboutPage();
-                        }
-                    ));
-                  },
-                )
-              ],
+              title: Text("Chat"),
             ),
             body: BlocConsumer<TcpBloc, TcpState>(
               bloc: _tcpBloc,
@@ -112,7 +113,7 @@ class _MainPageState extends State<MainPage> {
                         itemCount: chatUsers.length,
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, int index) {
-                          var imageURL = chatLogs[0]["users"][0][chatUsers[index]]["profileImageUrl"];
+                          var imageURL = chatLogs["users"][chatUsers[index]]["profileImageUrl"];
                           return InkWell(
                               onTap: () {
                                 _IDChatting = "${chatUsers[index]}";
@@ -127,8 +128,9 @@ class _MainPageState extends State<MainPage> {
                                 //     .chatServerAddress}");
                                 // print("sending nickname to server");
                                 var initializedMessages = <Message>[];
-                                if (chatLogs[0]["users"][0][_IDChatting]["messages"] != null) {
-                                  var dbMessages = chatLogs[0]["users"][0][_IDChatting]["messages"];
+                                if (chatLogs["users"][_IDChatting]["messages"] != null) {
+                                  var dbMessages = chatLogs["users"][_IDChatting]["messages"];
+                                  print(dbMessages);
                                   for (var message_counter = 0; message_counter < dbMessages.length; message_counter++) {
                                     var sender = Sender.Client;
                                     if (int.parse(dbMessages[message_counter]["Sender"].toString()) == 1) {
@@ -164,7 +166,7 @@ class _MainPageState extends State<MainPage> {
                                     const Padding(
                                         padding: EdgeInsets.only(left: 5.0)
                                     ),
-                                    Text(chatLogs[0]["users"][0][chatUsers[index]]["displayName"]),
+                                    Text(chatLogs["users"][chatUsers[index]]["displayName"]),
                                   ],
                                 ),
                               )
@@ -245,10 +247,12 @@ class _MainPageState extends State<MainPage> {
                       ElevatedButton(
                         child: const Text('Disconnect'),
                         onPressed: () async {
-                          // chatLogs[0]["users"][0][_IDChatting]["messages"]
-                          // _uploadChatLog(chatLogs);
-                          await _uploadChatLog(tcpState.messagesToString());
+                          print(tcpState.getMessages());
+                          await uploadChatLog(tcpState.getMessages());
                           _tcpBloc!.add(Disconnect());
+                          setState(() {
+
+                          });
                         },
                       ),
                     ],

@@ -102,6 +102,41 @@ class _MatchPageState extends State<MatchPage> {
           .then((_) => debugPrint('User ID added to Matched field'))
           .catchError((error) =>
               debugPrint('Error adding user ID to notMatched field: $error'));
+
+
+      FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .update({"chatLog.users.${userData[previousIndex].id}": {}});
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .update({"chatLog.users.${userData[previousIndex].id}.displayName":
+            (userData[previousIndex]["displayName"])
+          });
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .update({"chatLog.users.${userData[previousIndex].id}.profileImageUrl":
+            (userData[previousIndex]["profileImageUrl"])
+          });
+
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
+          .update({"chatLog.users_list": FieldValue.arrayUnion([userData[previousIndex].id])});
+
+      print("display name of match: ${userData[previousIndex]["displayName"]}");
+      // FirebaseFirestore.instance
+      //     .collection('users')
+      //     .doc(userID)
+      //     .update({"chatLog": [{"users": [
+      //           {"${FieldValue.arrayUnion([userData[previousIndex
+      //           }].id])}": {"displayName":
+      //           "${FieldValue.arrayUnion([userData[previousIndex].])}"}
+      //         ]
+      //           }
+      //     ]});
     }
 
     return true;
