@@ -177,9 +177,8 @@ class _MatchPageState extends State<MatchPage> {
                 ],
               ),
             );
-          }
-
-          List<Widget> fetchedData = userData.map((doc) {
+          } else {
+            List<Widget> fetchedData = userData.map((doc) {
             final name = doc['displayName'];
             final favoriteFood = doc['favoriteFood'];
             final imageURL = doc['profileImageUrl'];
@@ -281,6 +280,11 @@ class _MatchPageState extends State<MatchPage> {
               ],
             ),
           );
+            
+            
+          }
+
+          
         }
       },
     );
