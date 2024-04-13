@@ -30,4 +30,4 @@ jobs:
         run: flutter test test
         
       - name: Integration tests
-        run: flutter integration_test
+        run: flutter test integration_test
