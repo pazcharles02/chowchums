@@ -28,3 +28,6 @@ jobs:
 
       - name: Run tests
         run: flutter test test
+        
+      - name: Integration tests
+        run: flutter integration_test
