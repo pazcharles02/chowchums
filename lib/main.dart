@@ -13,7 +13,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
       theme: myTheme,
       initialRoute: '/', // Set initial route
       routes: {
-        '/': (context) => const LoginPage(), //'/' is route to LoginPage
-        '/login': (context) => const LoginPage(), //'/login' routing to LoginPage
+        '/': (context) =>  const LoginPage(), //'/' is route to LoginPage
+        '/login': (context) =>  const LoginPage(), //'/login' routing to LoginPage
         // Add other routes as needed
       },
     );

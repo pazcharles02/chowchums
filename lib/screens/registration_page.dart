@@ -25,27 +25,29 @@ Future<void> registerRandomUsers(BuildContext context, int count) async {
 
       if (userCredential.user != null) {
         // User registration successful
-        print('User registered successfully: ${userCredential.user!.email}');
+        debugPrint('User registered successfully: ${userCredential.user!.email}');
         // Optionally, you can navigate to another page or perform other actions here
       }
     }
   } catch (error) {
     // Handle registration errors
-    print('Failed to register user: $error');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Failed to register user: $error'),
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    debugPrint('Failed to register user: $error');
+    if(context.mounted){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to register user: $error'),
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
   }
 }
 
 class RegistrationPage extends StatelessWidget {
   final FirebaseAuth auth;
 
-  const RegistrationPage({Key? key, required this.auth}) : super(key: key);
+  const RegistrationPage({super.key, required this.auth});
 
   @override
   Widget build(BuildContext context) {
@@ -75,30 +77,34 @@ class RegistrationPage extends StatelessWidget {
             email: email,
             password: password,
           );
-          if (userCredential.user != null) {
+          if (userCredential.user != null && context.mounted) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CreateProfilePage(userId: userCredential.user!.uid)),
             );
           }
         } else {
+          if(context.mounted){
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Passwords do not match. Please make sure the passwords match.'),
+                duration: Duration(seconds: 2),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+        }
+      } catch (err) {
+        debugPrint('Failed to register user: $err');
+        if(context.mounted){
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Passwords do not match. Please make sure the passwords match.'),
+              content: Text('Failed to register user: email already in use'),
               duration: Duration(seconds: 2),
               behavior: SnackBarBehavior.floating,
             ),
           );
         }
-      } catch (err) {
-        print('Failed to register user: $err');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to register user: email already in use'),
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
       }
     }
 
@@ -117,7 +123,7 @@ class RegistrationPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
-                key: Key('emailTextField'),
+                key: const Key('emailTextField'),
                 controller: usernameController,
                 decoration: const InputDecoration(
                   labelText: 'Email',
@@ -126,7 +132,7 @@ class RegistrationPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               TextField(
-                key: Key('passwordTextField'),
+                key: const Key('passwordTextField'),
                 obscureText: true,
                 controller: passwordController,
                 decoration: const InputDecoration(
@@ -136,7 +142,7 @@ class RegistrationPage extends StatelessWidget {
               ),
               const SizedBox(height: 10), // Adjusted height
               TextField(
-                key: Key('confirmPasswordTextField'),
+                key: const Key('confirmPasswordTextField'),
                 obscureText: true,
                 controller: confirmPasswordController,
                 decoration: const InputDecoration(

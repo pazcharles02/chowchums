@@ -6,13 +6,13 @@ import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
   final String userId;
-  const HomePage({Key? key, required this.userId}) : super(key: key);
+  const HomePage({super.key, required this.userId});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   late List<Widget> _pages;
 
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
 
 class HomePageContent extends StatelessWidget {
   final String userId;
-  const HomePageContent({Key? key, required this.userId}) : super(key: key);
+  const HomePageContent({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {

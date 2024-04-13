@@ -8,6 +8,6 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(ChatPage(userId: "79zlUjIvwhYSnRd5qsF3NTDjNai2"));
+  runApp(const ChatPage(userId: "79zlUjIvwhYSnRd5qsF3NTDjNai2"));
 }
 

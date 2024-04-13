@@ -5,13 +5,13 @@ import 'tcp_bloc/tcp_bloc.dart';
 
 class ChatPage extends StatefulWidget {
   final String userId;
-  const ChatPage({Key? key, required this.userId}) : super(key: key);
+  const ChatPage({super.key, required this.userId});
 
   @override
-  _ChatPageState createState() => _ChatPageState();
+  ChatPageState createState() => ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();

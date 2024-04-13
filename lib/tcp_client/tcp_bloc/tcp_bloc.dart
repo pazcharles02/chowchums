@@ -37,14 +37,14 @@ class TcpBloc extends Bloc<TcpEvent, TcpState> {
     } else if (event is SendMessage) {
       yield* _mapSendMessageToState(event);
     } else if (event is ConnectHost) {
-      yield* _ConnectHost(event);
+      yield* _connectHost(event);
     } else if (event is InitializeMessages) {
-      yield* _InitializeMessages(event);
+      yield* _initializeMessages(event);
     }
   }
 
   Stream<TcpState> _mapConnectToState(Connect event) async* {
-    yield state.copywith(connectionState: SocketConnectionState.Connecting);
+    yield state.copywith(connectionState: SocketConnectionState.connecting);
     try {
       _socketConnectionTask = await Socket.startConnect(event.host, event.port);
       _socket = await _socketConnectionTask!.socket;
@@ -55,7 +55,7 @@ class TcpBloc extends Bloc<TcpEvent, TcpState> {
                 message: Message(
                   message: String.fromCharCodes(event),
                   timestamp: DateTime.now(),
-                  sender: Sender.Server,
+                  sender: Sender.server,
                 )
             )
         );
@@ -64,26 +64,26 @@ class TcpBloc extends Bloc<TcpEvent, TcpState> {
       //   this.add(ErrorOccured());
       // });
 
-      yield state.copywith(connectionState: SocketConnectionState.Connected);
+      yield state.copywith(connectionState: SocketConnectionState.connected);
     } catch (err) {
-      yield state.copywith(connectionState: SocketConnectionState.Failed);
+      yield state.copywith(connectionState: SocketConnectionState.failed);
     }
   }
 
   Stream<TcpState> _mapDisconnectToState() async* {
     try {
-      yield state.copywith(connectionState: SocketConnectionState.Disconnecting);
+      yield state.copywith(connectionState: SocketConnectionState.disconnecting);
       _socketConnectionTask?.cancel();
       await _socketStreamSub?.cancel();
       await _socket?.close();
     } catch (ex) {
       print(ex);
     }
-    yield state.copywith(connectionState: SocketConnectionState.None, messages: []);
+    yield state.copywith(connectionState: SocketConnectionState.none, messages: []);
   }
 
   Stream<TcpState> _mapErrorToState() async* {
-    yield state.copywith(connectionState: SocketConnectionState.Failed);
+    yield state.copywith(connectionState: SocketConnectionState.failed);
     await _socketStreamSub?.cancel();
     await _socket?.close();
   }
@@ -93,19 +93,19 @@ class TcpBloc extends Bloc<TcpEvent, TcpState> {
       yield state.copyWithNewMessage(message: Message(
         message: event.message.substring(5 + event.nickLength),
         timestamp: DateTime.now(),
-        sender: Sender.Client,
+        sender: Sender.client,
       ));
       _socket!.writeln(event.message);
     }
   }
 
-  Stream<TcpState> _ConnectHost(ConnectHost event) async* {
+  Stream<TcpState> _connectHost(ConnectHost event) async* {
     if (_socket != null) {
       _socket!.writeln(event.message);
     }
   }
 
-  Stream<TcpState> _InitializeMessages(InitializeMessages event) async* {
+  Stream<TcpState> _initializeMessages(InitializeMessages event) async* {
     yield state.initializeMessages(messages: event.initializedMessages);
   }
 

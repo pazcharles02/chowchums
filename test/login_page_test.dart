@@ -18,6 +18,7 @@ class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
 void main() {
   // Create a mock FirebaseAuth instance
+  // ignore: unused_local_variable
   late MockFirebaseAuth authMock;
 
   setUp(() {

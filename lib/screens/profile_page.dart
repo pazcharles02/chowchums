@@ -8,21 +8,27 @@ import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userId;
-  const ProfilePage({Key? key, required this.userId}) : super(key: key);
+  const ProfilePage({super.key, required this.userId});
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  ProfilePageState createState() => ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class ProfilePageState extends State<ProfilePage> {
   String _profileImageUrl = "";
 
-  void _signOut() async {
+  Future<void> _signOut(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
-      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+      if (context.mounted) {
+        await Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/login',
+              (route) => false,
+        );
+      }
     } catch (e) {
-      print("Error signing out: $e");
+      debugPrint("Error signing out: $e");
     }
   }
 
@@ -31,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
       final storage = FirebaseStorage.instance;
       final reference = storage.ref().child('profile_pictures/${widget.userId}');
       final uploadTask = reference.putFile(File(filePath));
-      await uploadTask.whenComplete(() => print('Image uploaded'));
+      await uploadTask.whenComplete(() => debugPrint('Image uploaded'));
       final url = await reference.getDownloadURL();
       await FirebaseFirestore.instance
           .collection('users')
@@ -39,10 +45,10 @@ class _ProfilePageState extends State<ProfilePage> {
           .update({'profileImageUrl': url});
       setState(() {
         _profileImageUrl = url;
-        print("Profile Image URL: $_profileImageUrl");
+        debugPrint("Profile Image URL: $_profileImageUrl");
       });
     } catch (e) {
-      print("Error uploading profile picture: $e");
+      debugPrint("Error uploading profile picture: $e");
     }
   }
 
@@ -72,14 +78,13 @@ class _ProfilePageState extends State<ProfilePage> {
             body: Column(
               children: <Widget>[
                 Container(
-                  width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.33,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: _profileImageUrl.isEmpty
                           ? const AssetImage('assets/images/default_picture.png')
                           : NetworkImage(_profileImageUrl) as ImageProvider,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     ),
                   ),
                   child: GestureDetector(
@@ -114,8 +119,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
+                        const Padding(
+                          padding: EdgeInsets.all(5.0),
                           child: Divider(thickness: .5, color: Colors.black),
                         ),
                         Padding(
@@ -134,7 +139,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
             floatingActionButton: ElevatedButton(
-              onPressed: _signOut,
+              onPressed: () async {
+                await _signOut(context);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepOrange,
                 foregroundColor: Colors.black,

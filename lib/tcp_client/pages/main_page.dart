@@ -1,6 +1,7 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:bubble/bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../constants/constants.dart';
@@ -9,15 +10,15 @@ import '../tcp_bloc/tcp_bloc.dart';
 
 class MainPage extends StatefulWidget {
   final String userId;
-  const MainPage({Key? key, required this.userId}) : super(key: key);
+  const MainPage({super.key, required this.userId});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  MainPageState createState() => MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class MainPageState extends State<MainPage> {
   TcpBloc? _tcpBloc;
-  String? _IDChatting;
+  String? _idChatting;
   TextEditingController? _chatTextEditingController;
 
   @override
@@ -32,13 +33,13 @@ class _MainPageState extends State<MainPage> {
       await FirebaseFirestore.instance
             .collection('users')
             .doc(widget.userId)
-            .update({"chatLog.users.$_IDChatting.messages": []});
+            .update({"chatLog.users.$_idChatting.messages": []});
 
       for (var messageCounter = 0; messageCounter < chatToUpdate.length; messageCounter++) {
         await FirebaseFirestore.instance
             .collection('users')
             .doc(widget.userId)
-            .update({"chatLog.users.$_IDChatting.messages":
+            .update({"chatLog.users.$_idChatting.messages":
         FieldValue.arrayUnion([{
           "DateTime": chatToUpdate[messageCounter].timestamp.toString(),
           "Sender": chatToUpdate[messageCounter].sender.index.toString(),
@@ -46,7 +47,7 @@ class _MainPageState extends State<MainPage> {
         });
       }
     } catch (e) {
-      print("Error uploading chat logs: $e");
+      debugPrint("Error uploading chat logs: $e");
     }
   }
   @override
@@ -69,7 +70,7 @@ class _MainPageState extends State<MainPage> {
           } catch (e) {
             return Scaffold(
               appBar: AppBar(
-                title: Text("No chats, go match with some other users first!"),
+                title: const Text("No chats, go match with some other users first!"),
               ),
             );
           }
@@ -79,11 +80,11 @@ class _MainPageState extends State<MainPage> {
               bloc: _tcpBloc,
               listener: (BuildContext context, TcpState tcpState) {
                 if (tcpState.connectionState ==
-                    SocketConnectionState.Connected) {
+                    SocketConnectionState.connected) {
                   ScaffoldMessenger.of(context)
                       .hideCurrentSnackBar();
                 } else
-                if (tcpState.connectionState == SocketConnectionState.Failed) {
+                if (tcpState.connectionState == SocketConnectionState.failed) {
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
                     ..showSnackBar(
@@ -101,8 +102,8 @@ class _MainPageState extends State<MainPage> {
                 }
               },
               builder: (context, tcpState) {
-                if (tcpState.connectionState == SocketConnectionState.None ||
-                    tcpState.connectionState == SocketConnectionState.Failed) {
+                if (tcpState.connectionState == SocketConnectionState.none ||
+                    tcpState.connectionState == SocketConnectionState.failed) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 8.0),
@@ -113,7 +114,7 @@ class _MainPageState extends State<MainPage> {
                           var imageURL = chatLogs["users"][chatUsers[index]]["profileImageUrl"];
                           return InkWell(
                               onTap: () {
-                                _IDChatting = "${chatUsers[index]}";
+                                _idChatting = "${chatUsers[index]}";
                                 _tcpBloc!.add(
                                     Connect(
                                         host: Constants.chatServerAddress,
@@ -121,18 +122,18 @@ class _MainPageState extends State<MainPage> {
                                     )
                                 );
                                 var initializedMessages = <Message>[];
-                                if (chatLogs["users"][_IDChatting]["messages"] != null) {
-                                  var dbMessages = chatLogs["users"][_IDChatting]["messages"];
-                                  print(dbMessages);
-                                  for (var message_counter = 0; message_counter < dbMessages.length; message_counter++) {
-                                    var sender = Sender.Client;
-                                    if (int.parse(dbMessages[message_counter]["Sender"].toString()) == 1) {
-                                      sender = Sender.Server;
+                                if (chatLogs["users"][_idChatting]["messages"] != null) {
+                                  var dbMessages = chatLogs["users"][_idChatting]["messages"];
+                                  debugPrint(dbMessages);
+                                  for (var messageCounter = 0; messageCounter < dbMessages.length; messageCounter++) {
+                                    var sender = Sender.client;
+                                    if (int.parse(dbMessages[messageCounter]["Sender"].toString()) == 1) {
+                                      sender = Sender.server;
                                     }
                                     initializedMessages.add(Message(
-                                      timestamp: DateTime.parse(dbMessages[message_counter]["DateTime"].toString()),
+                                      timestamp: DateTime.parse(dbMessages[messageCounter]["DateTime"].toString()),
                                       sender: sender,
-                                      message: dbMessages[message_counter]["message"].toString(),
+                                      message: dbMessages[messageCounter]["message"].toString(),
                                     ));
                                   }
                                 }
@@ -167,7 +168,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   );
                 } else if (tcpState.connectionState ==
-                    SocketConnectionState.Connecting) {
+                    SocketConnectionState.connecting) {
                   return Center(
                     child: ListView(
                       children: <Widget>[
@@ -183,30 +184,28 @@ class _MainPageState extends State<MainPage> {
                     ),
                   );
                 } else if (tcpState.connectionState ==
-                    SocketConnectionState.Connected) {
+                    SocketConnectionState.connected) {
                   // print("adding messages to initial state");
                   return Column(
                     children: [
                       AppBar(
-                        title: Text("${chatLogs["users"][_IDChatting]["displayName"]}"),
+                        title: Text("${chatLogs["users"][_idChatting]["displayName"]}"),
                       ),
                       Expanded(
-                        child: Container(
-                          child: ListView.builder(
-                              itemCount: tcpState.messages.length,
-                              itemBuilder: (context, idx) {
-                                Message m = tcpState.messages[idx];
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Bubble(
-                                    alignment: m.sender == Sender.Client
-                                        ? Alignment.centerRight
-                                        : Alignment.centerLeft,
-                                    child: Text(m.message),
-                                  ),
-                                );
-                              }
-                          ),
+                        child: ListView.builder(
+                            itemCount: tcpState.messages.length,
+                            itemBuilder: (context, idx) {
+                              Message m = tcpState.messages[idx];
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Bubble(
+                                  alignment: m.sender == Sender.client
+                                      ? Alignment.centerRight
+                                      : Alignment.centerLeft,
+                                  child: Text(m.message),
+                                ),
+                              );
+                            }
                         ),
                       ),
                       Padding(
@@ -228,9 +227,9 @@ class _MainPageState extends State<MainPage> {
                                 () {
                                 if (_chatTextEditingController!.text != "") {
                                   _tcpBloc!.add(SendMessage(
-                                      message: "/msg $_IDChatting ${_chatTextEditingController!
+                                      message: "/msg $_idChatting ${_chatTextEditingController!
                                           .text}",
-                                      nickLength: _IDChatting
+                                      nickLength: _idChatting
                                       !.length));
                                   _chatTextEditingController!.text = '';
                                 }

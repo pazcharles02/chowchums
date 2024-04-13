@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,22 +54,26 @@ class LoginPage extends StatelessWidget {
 
                     if (userCredential.user != null) {
                       String userId = userCredential.user!.uid;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomePage(userId: userId)),
-                      );
+                      if(context.mounted){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage(userId: userId)),
+                        );
+                      }
                     } else {
-                      print('User is null');
+                      debugPrint('User is null');
                     }
 
                   } catch(error) {
-                    print('login failed');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('Email/Password is incorrect'),
-                        duration: const Duration(seconds: 3),
-                      ),
-                    );
+                    debugPrint('login failed');
+                    if(context.mounted){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Email/Password is incorrect'),
+                          duration: Duration(seconds: 3),
+                        ),
+                      );
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(

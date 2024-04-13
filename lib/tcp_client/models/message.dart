@@ -1,7 +1,7 @@
 
 enum Sender {
-  Client,
-  Server
+  client,
+  server
 }
 
 class Message {

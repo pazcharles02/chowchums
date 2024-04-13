@@ -1,11 +1,11 @@
 part of 'tcp_bloc.dart';
 
 enum SocketConnectionState {
-  Connecting,
-  Disconnecting,
-  Connected,
-  Failed,
-  None
+  connecting,
+  disconnecting,
+  connected,
+  failed,
+  none
 }
 
 @immutable
@@ -20,7 +20,7 @@ class TcpState {
 
   factory TcpState.initial() {
     return const TcpState(
-        connectionState: SocketConnectionState.None,
+        connectionState: SocketConnectionState.none,
         messages: <Message>[]
     );
   }

@@ -10,13 +10,13 @@ import 'home_page.dart';
 class CreateProfilePage extends StatefulWidget {
   final String userId;
 
-  const CreateProfilePage({Key? key, required this.userId}) : super(key: key);
+  const CreateProfilePage({super.key, required this.userId});
 
   @override
-  _CreateProfilePageState createState() => _CreateProfilePageState();
+  CreateProfilePageState createState() => CreateProfilePageState();
 }
 
-class _CreateProfilePageState extends State<CreateProfilePage> {
+class CreateProfilePageState extends State<CreateProfilePage> {
   TextEditingController displayNameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
   TextEditingController birthdateController = TextEditingController();
@@ -24,41 +24,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
   String? selectedFood;
   List<String> foodOptions = [
-    "Pizza", "Burger", "Salad", "Sushi", "Pasta", "Taco", "Steak", "Chicken Curry", "Ramen", "Sandwich",
-    "Burrito", "Fish and Chips", "Pad Thai", "Lasagna", "Fried Rice", "Pho", "Tacos", "Hot Dog", "BBQ Ribs",
-    "Shrimp Scampi", "Chili", "Hamburger", "Mashed Potatoes", "Chicken Wings", "Fajitas", "Cobb Salad", "Gyro",
-    "Meatloaf", "Clam Chowder", "Chicken Parmesan", "French Toast", "Fish Tacos", "Caesar Salad",
-    "Beef Stroganoff", "Potato Soup", "Crab Cakes", "Stuffed Bell Peppers", "Chicken and Waffles", "Garden Salad",
-    "Eggplant Parmesan", "Tuna Salad", "Pad See Ew", "Veggie Burger", "Tom Yum Soup", "Lobster Bisque", "Gnocchi",
-    "Spaghetti Carbonara", "Chicken Alfredo", "Beef Tacos", "Pulled Pork Sandwich", "Miso Soup", "Shrimp Fried Rice",
-    "Egg Roll", "Chow Mein", "Lamb Gyro", "Carnitas", "Gumbo", "Chicken Salad", "Potato Salad", "Caprese Salad",
-    "Philly Cheesesteak", "Mac and Cheese", "Shrimp Cocktail", "Lemon Chicken", "Baked Ziti", "Tomato Soup",
-    "Beef and Broccoli", "Cucumber Salad", "Fried Chicken", "Egg Salad", "Garden Burger", "Chicken and Dumplings",
-    "Pork Chop", "Cobbler", "Beef Wellington", "Lemon Pepper Chicken", "Stuffed Mushrooms", "Crispy Duck",
-    "Crab Rangoon", "Shrimp and Grits", "Chicken Pot Pie", "Ratatouille", "Beef Bourguignon", "Spinach Artichoke Dip",
-    "Shepherd's Pie", "Beef Brisket", "Escargot", "Rack of Lamb", "Ginger Beef", "Coq au Vin", "Linguine and Clams",
-    "Chicken Enchiladas", "Chicken Cordon Bleu", "Beef Stir Fry", "Lamb Chops", "Buffalo Wings", "Crab Legs",
-    "Lobster Roll", "Fish Curry", "Tikka Masala", "Peking Duck", "Cajun Shrimp", "Garlic Shrimp", "Chicken Satay",
-    "Vegetable Stir Fry", "Shrimp Etouffee", "Chicken Marsala", "Beef Rendang", "Vegetable Curry", "Tortilla Soup",
-    "Beef Empanadas", "Chicken Fajita", "Pork Carnitas", "Szechuan Chicken", "Teriyaki Chicken", "Mongolian Beef",
-    "Baked Salmon", "Lemon Butter Shrimp", "Baked Potato", "Garlic Butter Steak", "Roast Beef", "Turkey Sandwich",
-    "Grilled Cheese Sandwich", "Cheeseburger", "Spicy Chicken Sandwich", "Fried Fish", "Seafood Paella",
-    "Stuffed Cabbage Rolls", "Chicken Tikka", "Beef Kabobs", "Pork Schnitzel", "Butter Chicken",
-    "Lemon Herb Roast Chicken", "Crispy Tofu", "Vegetable Lasagna", "Mushroom Risotto", "Eggplant Rollatini",
-    "Tiramisu", "Chocolate Cake", "Apple Pie", "Cheesecake", "Creme Brulee", "Panna Cotta", "Tres Leches Cake",
-    "Key Lime Pie", "Red Velvet Cake", "Carrot Cake", "Strawberry Shortcake", "Banana Bread", "Blueberry Muffins",
-    "Pumpkin Pie", "Cinnamon Rolls", "Chocolate Chip Cookies", "Brownies", "Ice Cream Sundae", "Fruit Salad",
-    "Chocolate Fondue", "Caramel Popcorn", "Nachos", "Garlic Bread", "Onion Rings", "Guacamole", "Hummus",
-    "Bruschetta", "Deviled Eggs", "Cheese Plate", "Stuffed Jalapenos", "Spinach Dip", "Buffalo Chicken Dip",
-    "Salsa and Chips", "Cucumber Sushi Rolls", "Spring Rolls", "Calamari", "Shrimp Tempura", "Crab Dip",
-    "Fried Pickles", "Mozzarella Sticks", "Chili Cheese Fries", "Potato Skins", "Buffalo Cauliflower Wings",
-    "Bacon Wrapped Dates", "Stuffed Peppers", "Greek Salad", "Ceviche", "Brussels Sprouts", "Kale Salad",
-    "Quinoa Salad", "Couscous Salad", "Antipasto Platter", "Meat and Cheese Board", "Fruit Platter", "Crudites",
-    "Waldorf Salad", "Nicoise Salad", "Thai Beef Salad", "Watermelon Salad", "Panzanella Salad", "Poke Bowl",
-    "Banh Mi Sandwich", "Club Sandwich", "Turkey Wrap", "BLT Sandwich", "Cuban Sandwich", "Monte Cristo Sandwich",
-    "Ham and Cheese Croissant", "Bagel with Lox", "Chicken Caesar Wrap", "Vegetable Wrap", "Caprese Panini",
-    "Tuna Melt", "Philly Cheesesteak Sandwich", "French Dip Sandwich", "Reuben Sandwich", "Smoked Salmon Bagel",
-    "Falafel Wrap"
+
   ];
 
   int maxDisplayNameLength = 20;
@@ -86,7 +52,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
-                    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                    final image = await ImagePicker()
+                        .pickImage(source: ImageSource.gallery);
                     if (image != null) {
                       await _uploadProfilePicture(image.path);
                     }
@@ -97,8 +64,10 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       image: DecorationImage(
-                        image: _profileImageUrl == null || _profileImageUrl!.isEmpty
-                            ? const AssetImage('assets/images/default_picture.png')
+                        image: _profileImageUrl == null ||
+                                _profileImageUrl!.isEmpty
+                            ? const AssetImage(
+                                'assets/images/default_picture.png')
                             : NetworkImage(_profileImageUrl!) as ImageProvider,
                         fit: BoxFit.contain,
                       ),
@@ -131,7 +100,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                     }
                   },
                   decoration: InputDecoration(
-                    labelText: 'Display Name (Max $maxDisplayNameLength characters)',
+                    labelText:
+                        'Display Name (Max $maxDisplayNameLength characters)',
                     border: const OutlineInputBorder(),
                   ),
                 ),
@@ -217,7 +187,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     }
 
     if (displayName.length > maxDisplayNameLength) {
-      _showErrorSnackBar('Display name must be less than or equal to $maxDisplayNameLength characters.');
+      _showErrorSnackBar(
+          'Display name must be less than or equal to $maxDisplayNameLength characters.');
       return;
     }
 
@@ -236,11 +207,13 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     try {
       parsedDate = DateTime.parse(birthdate);
     } catch (e) {
-      _showErrorSnackBar('Invalid birthdate format. Please use MM/DD/YYYY format.');
+      _showErrorSnackBar(
+          'Invalid birthdate format. Please use MM/DD/YYYY format.');
       return;
     }
 
-    if (parsedDate.year < DateTime.now().year - 125 || parsedDate.year > DateTime.now().year - 18) {
+    if (parsedDate.year < DateTime.now().year - 125 ||
+        parsedDate.year > DateTime.now().year - 18) {
       _showErrorSnackBar('Birthdate must be between 18 and 125 years old.');
       return;
     }
@@ -259,9 +232,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
     CollectionReference users = firestore.collection('users');
 
-    users
-        .doc(widget.userId)
-        .set({
+    users.doc(widget.userId).set({
       'displayName': displayName,
       'favoriteFood': selectedFood,
       'biography': bio,
@@ -270,15 +241,16 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
       'city': city,
       'notMatched': [],
       'Matched': [],
-    })
-        .then((value) {
-      print("Profile Added");
+    }).then((value) {
+      debugPrint("Profile Added");
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage(userId: widget.userId)),
+        MaterialPageRoute(
+            builder: (context) => HomePage(userId: widget.userId)),
       );
-    })
-        .catchError((error) => print("Failed to add profile: $error"));
+    }).catchError((error) {
+      debugPrint("Failed to add profile: $error");
+    });
   }
 
   void _showErrorSnackBar(String message) {
@@ -305,16 +277,17 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     if (filePath != null) {
       try {
         final storage = FirebaseStorage.instance;
-        final reference = storage.ref().child('profile_pictures/${widget.userId}');
+        final reference =
+            storage.ref().child('profile_pictures/${widget.userId}');
         final uploadTask = reference.putFile(File(filePath));
-        await uploadTask.whenComplete(() => print('Image uploaded'));
+        await uploadTask.whenComplete(() => debugPrint('Image uploaded'));
         final url = await reference.getDownloadURL();
         setState(() {
           _profileImageUrl = url;
-          print("Profile Image URL: $_profileImageUrl");
+          debugPrint("Profile Image URL: $_profileImageUrl");
         });
       } catch (e) {
-        print("Error uploading profile picture: $e");
+        debugPrint("Error uploading profile picture: $e");
       }
     }
   }

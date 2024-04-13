@@ -5,16 +5,15 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 class MatchPage extends StatefulWidget {
   final String userId;
 
-  const MatchPage({Key? key, required this.userId}) : super(key: key);
+  const MatchPage({super.key, required this.userId});
 
   @override
-  _MatchPageState createState() => _MatchPageState();
+  MatchPageState createState() => MatchPageState();
 }
 
-class _MatchPageState extends State<MatchPage> {
+class MatchPageState extends State<MatchPage> {
   final CardSwiperController controller = CardSwiperController();
   late Future<QuerySnapshot<Map<String, dynamic>>> _userFuture;
-  List<DocumentSnapshot>? _userData;
   List<String>? matchedArray;
   List<String>? notMatchedArray;
 
@@ -42,13 +41,13 @@ class _MatchPageState extends State<MatchPage> {
         notMatchedArray =
             List<String>.from(userSnapshot.data()?['notMatched'] ?? []);
 
-        print('Matched Array: $matchedArray');
-        print('Not Matched Array: $notMatchedArray');
+        debugPrint('Matched Array: $matchedArray');
+        debugPrint('Not Matched Array: $notMatchedArray');
       } else {
-        print('User document does not exist');
+        debugPrint('User document does not exist');
       }
     } catch (error) {
-      print('Error fetching user data: $error');
+      debugPrint('Error fetching user data: $error');
     }
   }
 
@@ -126,7 +125,7 @@ class _MatchPageState extends State<MatchPage> {
           .doc(userID)
           .update({"chatLog.users_list": FieldValue.arrayUnion([userData[previousIndex].id])});
 
-      print("display name of match: ${userData[previousIndex]["displayName"]}");
+      debugPrint("display name of match: ${userData[previousIndex]["displayName"]}");
       // FirebaseFirestore.instance
       //     .collection('users')
       //     .doc(userID)
@@ -210,26 +209,26 @@ class _MatchPageState extends State<MatchPage> {
                   ),
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     color: Colors.black,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '$name , $age',
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                         Text(
                           'Favorite Foods: $favoriteFood',
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                         Text(
                           '$city',
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                         Text(
                           'Biography: $bio',
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
