@@ -1,9 +1,9 @@
 name: App Dev Build
 on:
   push:
-    branches: [ prod, debug/dev ]
+    branches: [ prod, debug/dev, dev ]
   pull_request: 
-    branches: [ prod, debug/dev ]
+    branches: [ prod, debug/dev, dev ]
     
 jobs:
   build:
